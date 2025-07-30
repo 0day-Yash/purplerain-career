@@ -8,7 +8,7 @@ const teamMembers = [
   {
     name: 'Alexandra Chen',
     role: 'CEO & Co-Founder',
-    bio: 'Former NSA security architect. Led threat intelligence at three Fortune 100 companies. Believes security should be invisible until it\'s essential.',
+    bio: 'Former NSA security architect. Led threat intelligence at three Fortune 100 companies. Believes security should be invisible until its essential.',
     initials: 'AC',
     linkedin: '#',
     github: '#',
@@ -51,6 +51,8 @@ export function MeetTheTeam() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
+        } else {
+          setIsVisible(false); // Reset visibility when out of view
         }
       },
       { threshold: 0.1 }
@@ -59,18 +61,20 @@ export function MeetTheTeam() {
     const element = document.getElementById('team-section');
     if (element) observer.observe(element);
 
-    return () => observer.disconnect();
+    return () => {
+      if (element) observer.unobserve(element);
+    };
   }, []);
 
   return (
-    <section id="team-section" className="section-padding bg-black">
-      <div className="max-w-7xl mx-auto px-8">
-        <div className={`mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+    <section id="team-section" className="py-32 bg-background text-foreground overflow-hidden">
+      <div className="max-w-screen-xl mx-auto px-8">
+        <div className={`mb-20 ${isVisible ? 'animate-appear' : ''}`}>
           <div className="max-w-4xl">
-            <h2 className="font-display text-6xl md:text-7xl text-white mb-8 tracking-tight">
+            <h2 className="font-display text-6xl md:text-7xl mb-8 tracking-tight">
               Meet the <span className="gradient-text">Team</span>
             </h2>
-            <p className="font-body text-xl text-gray-400 leading-relaxed">
+            <p className="font-body text-xl text-muted-foreground leading-relaxed">
               Get to know the security experts, engineers, and researchers who are building the future of digital defense.
             </p>
           </div>
@@ -80,56 +84,53 @@ export function MeetTheTeam() {
           {teamMembers.map((member, index) => (
             <Card 
               key={index}
-              className={`card-modern card-interactive group transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-              style={{ transitionDelay: `${200 + index * 100}ms` }}
+              className={`card-modern card-interactive group ${isVisible ? `animate-appear delay-${200 + index * 100}` : ''}`}
             >
-              <CardContent className="p-8">
-                <div className="text-center">
-                  <div className="relative mb-6">
-                    <Avatar className="w-20 h-20 mx-auto border-2 border-gray-800 group-hover:border-purple-500/50 transition-all duration-300">
-                      <AvatarFallback className="bg-gray-900 text-purple-400 text-xl font-bold">
-                        {member.initials}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
-                      <member.icon className="w-4 h-4 text-purple-400" />
-                    </div>
+              <CardContent className="p-8 text-center">
+                <div className="relative mb-6">
+                  <Avatar className="w-20 h-20 mx-auto border-2 border-border group-hover:border-primary/50 transition-all duration-300">
+                    <AvatarFallback className="bg-muted text-primary text-xl font-bold">
+                      {member.initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-lg bg-primary/10 border border-border flex items-center justify-center">
+                    <member.icon className="w-4 h-4 text-primary" />
                   </div>
-                  
-                  <h3 className="font-heading text-xl text-white mb-2">{member.name}</h3>
-                  <p className="text-purple-400 text-sm mb-4 font-medium">{member.role}</p>
-                  <p className="font-body text-gray-400 text-sm leading-relaxed mb-6">{member.bio}</p>
-                  
-                  <div className="flex justify-center space-x-3">
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      className="w-8 h-8 p-0 text-gray-500 hover:text-purple-400 transition-colors rounded-lg"
-                    >
-                      <Linkedin className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      className="w-8 h-8 p-0 text-gray-500 hover:text-purple-400 transition-colors rounded-lg"
-                    >
-                      <Github className="w-4 h-4" />
-                    </Button>
-                  </div>
+                </div>
+                
+                <h3 className="font-heading text-xl mb-2">{member.name}</h3>
+                <p className="text-primary text-sm mb-4 font-medium">{member.role}</p>
+                <p className="font-body text-muted-foreground text-sm leading-relaxed mb-6">{member.bio}</p>
+                
+                <div className="flex justify-center space-x-3">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="w-8 h-8 p-0 text-muted-foreground hover:text-primary transition-colors rounded-lg"
+                  >
+                    <Linkedin className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="w-8 h-8 p-0 text-muted-foreground hover:text-primary transition-colors rounded-lg"
+                  >
+                    <Github className="w-4 h-4" />
+                  </Button>
                 </div>
               </CardContent>
             </Card>
           ))}
         </div>
 
-        <div className={`text-center transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <div className={`text-center ${isVisible ? 'animate-appear delay-500' : ''}`}>
           <Button 
             className="btn-primary group text-lg font-semibold"
           >
             View Full Team
             <ArrowUpRight className="ml-3 w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
           </Button>
-          <p className="font-body text-gray-500 text-sm mt-6">
+          <p className="font-body text-muted-foreground text-sm mt-6">
             Learn more about our entire team and their backgrounds
           </p>
         </div>

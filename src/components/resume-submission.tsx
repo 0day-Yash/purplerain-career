@@ -28,6 +28,8 @@ export function ResumeSubmission() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
+        } else {
+          setIsVisible(false); // Reset visibility when out of view
         }
       },
       { threshold: 0.1 }
@@ -36,7 +38,9 @@ export function ResumeSubmission() {
     const element = document.getElementById('resume-section');
     if (element) observer.observe(element);
 
-    return () => observer.disconnect();
+    return () => {
+      if (element) observer.unobserve(element);
+    };
   }, []);
 
   const validateForm = () => {
@@ -48,7 +52,7 @@ export function ResumeSubmission() {
     
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    } else if (!/^[^s@]+@[^s@]+.[^s@]+$/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
     }
     
@@ -171,17 +175,17 @@ export function ResumeSubmission() {
 
   if (isSubmitted) {
     return (
-      <section className="py-32 bg-black relative overflow-hidden">
+      <section className="py-32 bg-background text-foreground relative overflow-hidden">
         {/* Background Grid */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
         
         <div className="max-w-2xl mx-auto px-8 relative z-10">
-          <div className="text-center animate-scale-in">
-            <div className="w-20 h-20 rounded-lg bg-green-500/10 border border-green-500/20 flex items-center justify-center mx-auto mb-8">
-              <CheckCircle className="w-10 h-10 text-green-400" />
+          <div className="text-center animate-appear-zoom">
+            <div className="w-20 h-20 rounded-lg bg-brand/10 border border-brand/20 flex items-center justify-center mx-auto mb-8">
+              <CheckCircle className="w-10 h-10 text-brand" />
             </div>
-            <h3 className="font-display text-5xl text-white mb-6 tracking-tight">Application Received</h3>
-            <p className="font-body text-lg text-gray-400 mb-12 leading-relaxed max-w-md mx-auto">
+            <h3 className="font-display text-5xl mb-6 tracking-tight">Application Received</h3>
+            <p className="font-body text-lg text-muted-foreground mb-12 leading-relaxed max-w-md mx-auto">
               We'll review your application and respond within 48 hours if there's a potential match.
             </p>
             <Button 
@@ -197,7 +201,8 @@ export function ResumeSubmission() {
                 setSelectedFile(null);
                 setErrors({});
               }}
-              className="bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/30 font-medium px-8 py-4 rounded-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+              variant="secondary"
+              className="font-medium px-8 py-4 rounded-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
             >
               Submit Another Application
             </Button>
@@ -208,17 +213,17 @@ export function ResumeSubmission() {
   }
 
   return (
-    <section id="resume-section" className="py-32 bg-black relative overflow-hidden">
+    <section id="resume-section" className="py-32 bg-background text-foreground relative overflow-hidden">
       {/* Background Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
       
       <div className="max-w-4xl mx-auto px-8 relative z-10">
         {/* Header */}
-        <div className={`text-center mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <h2 className="font-display text-7xl md:text-8xl text-white mb-8 tracking-tight">
-            Apply <span className="bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent">Now</span>
+        <div className={`text-center mb-20 ${isVisible ? 'animate-appear' : ''}`}>
+          <h2 className="font-display text-7xl md:text-8xl mb-8 tracking-tight">
+            Apply <span className="gradient-text">Now</span>
           </h2>
-          <p className="font-body text-xl text-gray-400 leading-relaxed max-w-2xl mx-auto">
+          <p className="font-body text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
             Ready to defend the digital future? Send us your details and let's start the conversation.
           </p>
         </div>
@@ -234,7 +239,7 @@ export function ResumeSubmission() {
         </form>
 
         {/* Application Form */}
-        <div className={`transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <div className={`${isVisible ? 'animate-appear delay-200' : ''}`}>
           <form onSubmit={handleSubmit} className="space-y-12" name="resume-submission" data-netlify="true" netlify-honeypot="bot-field">
             <input type="hidden" name="form-name" value="resume-submission" />
             <input type="hidden" name="bot-field" />
@@ -242,8 +247,8 @@ export function ResumeSubmission() {
             {/* Personal Information */}
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-4">
-                <Label htmlFor="fullName" className="font-heading text-white text-lg flex items-center gap-3">
-                  <User className="w-5 h-5 text-purple-400" />
+                <Label htmlFor="fullName" className="font-heading text-lg flex items-center gap-3">
+                  <User className="w-5 h-5 text-primary" />
                   Full Name *
                 </Label>
                 <Input 
@@ -253,18 +258,18 @@ export function ResumeSubmission() {
                   onChange={handleInputChange}
                   required 
                   placeholder="Enter your full name"
-                  className={`bg-white/5 border-2 ${errors.fullName ? 'border-red-500' : 'border-white/10'} hover:border-white/20 focus:border-purple-500 rounded-lg px-6 py-4 text-white placeholder-gray-500 transition-all duration-300 focus:bg-white/10 text-lg h-14`}
+                  className={`bg-muted/20 border-2 ${errors.fullName ? 'border-destructive' : 'border-border'} hover:border-primary focus:border-primary rounded-lg px-6 py-4 text-foreground placeholder-muted-foreground transition-all duration-300 focus:bg-muted/30 text-lg h-14`}
                 />
                 {errors.fullName && (
-                  <p className="text-red-400 text-sm flex items-center gap-2">
+                  <p className="text-destructive text-sm flex items-center gap-2">
                     <AlertCircle className="w-4 h-4" />
                     {errors.fullName}
                   </p>
                 )}
               </div>
               <div className="space-y-4">
-                <Label htmlFor="email" className="font-heading text-white text-lg flex items-center gap-3">
-                  <Mail className="w-5 h-5 text-purple-400" />
+                <Label htmlFor="email" className="font-heading text-lg flex items-center gap-3">
+                  <Mail className="w-5 h-5 text-primary" />
                   Email Address *
                 </Label>
                 <Input 
@@ -275,10 +280,10 @@ export function ResumeSubmission() {
                   onChange={handleInputChange}
                   required 
                   placeholder="your.email@example.com"
-                  className={`bg-white/5 border-2 ${errors.email ? 'border-red-500' : 'border-white/10'} hover:border-white/20 focus:border-purple-500 rounded-lg px-6 py-4 text-white placeholder-gray-500 transition-all duration-300 focus:bg-white/10 text-lg h-14`}
+                  className={`bg-muted/20 border-2 ${errors.email ? 'border-destructive' : 'border-border'} hover:border-primary focus:border-primary rounded-lg px-6 py-4 text-foreground placeholder-muted-foreground transition-all duration-300 focus:bg-muted/30 text-lg h-14`}
                 />
                 {errors.email && (
-                  <p className="text-red-400 text-sm flex items-center gap-2">
+                  <p className="text-destructive text-sm flex items-center gap-2">
                     <AlertCircle className="w-4 h-4" />
                     {errors.email}
                   </p>
@@ -289,8 +294,8 @@ export function ResumeSubmission() {
             {/* Professional Links */}
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-4">
-                <Label htmlFor="linkedin" className="font-heading text-white text-lg flex items-center gap-3">
-                  <Linkedin className="w-5 h-5 text-purple-400" />
+                <Label htmlFor="linkedin" className="font-heading text-lg flex items-center gap-3">
+                  <Linkedin className="w-5 h-5 text-primary" />
                   LinkedIn Profile
                 </Label>
                 <Input 
@@ -299,12 +304,12 @@ export function ResumeSubmission() {
                   value={formData.linkedin}
                   onChange={handleInputChange}
                   placeholder="linkedin.com/in/yourprofile"
-                  className="bg-white/5 border-2 border-white/10 hover:border-white/20 focus:border-purple-500 rounded-lg px-6 py-4 text-white placeholder-gray-500 transition-all duration-300 focus:bg-white/10 text-lg h-14"
+                  className="bg-muted/20 border-2 border-border hover:border-primary focus:border-primary rounded-lg px-6 py-4 text-foreground placeholder-muted-foreground transition-all duration-300 focus:bg-muted/30 text-lg h-14"
                 />
               </div>
               <div className="space-y-4">
-                <Label htmlFor="portfolio" className="font-heading text-white text-lg flex items-center gap-3">
-                  <Github className="w-5 h-5 text-purple-400" />
+                <Label htmlFor="portfolio" className="font-heading text-lg flex items-center gap-3">
+                  <Github className="w-5 h-5 text-primary" />
                   GitHub / Portfolio
                 </Label>
                 <Input 
@@ -313,24 +318,24 @@ export function ResumeSubmission() {
                   value={formData.portfolio}
                   onChange={handleInputChange}
                   placeholder="github.com/yourprofile"
-                  className="bg-white/5 border-2 border-white/10 hover:border-white/20 focus:border-purple-500 rounded-lg px-6 py-4 text-white placeholder-gray-500 transition-all duration-300 focus:bg-white/10 text-lg h-14"
+                  className="bg-muted/20 border-2 border-border hover:border-primary focus:border-primary rounded-lg px-6 py-4 text-foreground placeholder-muted-foreground transition-all duration-300 focus:bg-muted/30 text-lg h-14"
                 />
               </div>
             </div>
 
             {/* Resume Upload */}
             <div className="space-y-4">
-              <Label className="font-heading text-white text-lg flex items-center gap-3">
-                <FileText className="w-5 h-5 text-purple-400" />
+              <Label className="font-heading text-lg flex items-center gap-3">
+                <FileText className="w-5 h-5 text-primary" />
                 Resume / CV *
               </Label>
               <div 
                 className={`relative border-2 border-dashed rounded-lg p-16 text-center transition-all duration-300 ${
                   dragActive 
-                    ? 'border-purple-500 bg-purple-500/5' 
+                    ? 'border-primary bg-primary/5' 
                     : errors.file
-                    ? 'border-red-500 bg-red-500/5'
-                    : 'border-white/20 hover:border-white/30 bg-white/5 hover:bg-white/10'
+                    ? 'border-destructive bg-destructive/5'
+                    : 'border-border hover:border-primary bg-muted/20 hover:bg-muted/30'
                 }`}
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
@@ -338,23 +343,24 @@ export function ResumeSubmission() {
                 onDrop={handleDrop}
               >
                 {selectedFile ? (
-                  <div className="flex items-center justify-center text-purple-400">
+                  <div className="flex items-center justify-center text-primary">
                     <FileText className="w-8 h-8 mr-4" />
                     <div>
                       <p className="font-heading text-xl">{selectedFile.name}</p>
-                      <p className="font-body text-gray-400 text-sm mt-1">
+                      <p className="font-body text-muted-foreground text-sm mt-1">
                         {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
                       </p>
                     </div>
                   </div>
                 ) : (
                   <div>
-                    <Upload className="w-16 h-16 text-gray-500 mx-auto mb-6" />
-                    <p className="font-heading text-white text-xl mb-4">Drop your resume here</p>
-                    <p className="font-body text-gray-400 mb-8">or click to browse files</p>
+                    <Upload className="w-16 h-16 text-muted-foreground mx-auto mb-6" />
+                    <p className="font-heading text-xl mb-4">Drop your resume here</p>
+                    <p className="font-body text-muted-foreground mb-8">or click to browse files</p>
                     <Button 
                       type="button" 
-                      className="bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/30 font-medium px-8 py-3 rounded-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                      variant="secondary"
+                      className="font-medium px-8 py-3 rounded-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
                     >
                       <label htmlFor="resumeFile" className="cursor-pointer">
                         Choose File
@@ -367,12 +373,12 @@ export function ResumeSubmission() {
                       onChange={handleFileChange}
                       className="hidden"
                     />
-                    <p className="font-mono text-sm text-gray-500 mt-4">PDF, DOC, or DOCX • Max 10MB</p>
+                    <p className="font-mono text-sm text-muted-foreground mt-4">PDF, DOC, or DOCX • Max 10MB</p>
                   </div>
                 )}
               </div>
               {errors.file && (
-                <p className="text-red-400 text-sm flex items-center gap-2">
+                <p className="text-destructive text-sm flex items-center gap-2">
                   <AlertCircle className="w-4 h-4" />
                   {errors.file}
                 </p>
@@ -381,7 +387,7 @@ export function ResumeSubmission() {
 
             {/* Message */}
             <div className="space-y-4">
-              <Label htmlFor="message" className="font-heading text-white text-lg">
+              <Label htmlFor="message" className="font-heading text-lg">
                 Why PurpleRain? *
               </Label>
               <Textarea 
@@ -392,10 +398,10 @@ export function ResumeSubmission() {
                 required 
                 rows={6}
                 placeholder="Tell us what excites you about cybersecurity and why you want to join our mission..."
-                className={`bg-white/5 border-2 ${errors.message ? 'border-red-500' : 'border-white/10'} hover:border-white/20 focus:border-purple-500 rounded-lg px-6 py-4 text-white placeholder-gray-500 transition-all duration-300 focus:bg-white/10 text-lg resize-none`}
+                className={`bg-muted/20 border-2 ${errors.message ? 'border-destructive' : 'border-border'} hover:border-primary focus:border-primary rounded-lg px-6 py-4 text-foreground placeholder-muted-foreground transition-all duration-300 focus:bg-muted/30 text-lg resize-none`}
               />
               {errors.message && (
-                <p className="text-red-400 text-sm flex items-center gap-2">
+                <p className="text-destructive text-sm flex items-center gap-2">
                   <AlertCircle className="w-4 h-4" />
                   {errors.message}
                 </p>
@@ -407,11 +413,11 @@ export function ResumeSubmission() {
               <Button 
                 type="submit" 
                 disabled={isSubmitting}
-                className="bg-white text-black hover:bg-gray-100 font-semibold px-12 py-4 rounded-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-white/10 active:scale-[0.98] text-lg group h-16 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-primary group text-lg font-semibold h-16 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <>
-                    <div className="w-6 h-6 border-2 border-black border-t-transparent rounded-full animate-spin mr-3"></div>
+                    <div className="w-6 h-6 border-2 border-foreground border-t-transparent rounded-full animate-spin mr-3"></div>
                     Submitting...
                   </>
                 ) : (
@@ -422,7 +428,7 @@ export function ResumeSubmission() {
                   </>
                 )}
               </Button>
-              <p className="font-body text-gray-500 text-sm mt-6">
+              <p className="font-body text-muted-foreground text-sm mt-6">
                 We'll respond within 48 hours if there's a potential match
               </p>
             </div>
