@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { MapPin, Clock, ChevronDown, ChevronUp, ArrowUpRight, DollarSign, Users, Code, Brain, Briefcase, Info } from 'lucide-react';
+import { MapPin, Clock, ChevronDown, ChevronUp, ArrowUpRight, DollarSign, Code, Brain, Briefcase, Info } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
   Dialog,

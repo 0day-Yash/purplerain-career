@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Upload, CheckCircle, FileText, Send, User, Mail, Linkedin, Github, ArrowRight, AlertCircle } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
 
 export function ResumeSubmission() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,7 +19,6 @@ export function ResumeSubmission() {
     message: ''
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const { toast } = useToast();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -84,11 +81,7 @@ export function ResumeSubmission() {
     e.preventDefault();
     
     if (!validateForm()) {
-      toast({
-        title: "Please fix the errors",
-        description: "Check the form for any missing or invalid information.",
-        variant: "destructive"
-      });
+      // Show error - form validation failed
       return;
     }
 
@@ -116,19 +109,12 @@ export function ResumeSubmission() {
 
       if (response.ok) {
         setIsSubmitted(true);
-        toast({
-          title: "Application Submitted Successfully!",
-          description: "We'll review your application and respond within 48 hours.",
-        });
       } else {
         throw new Error('Submission failed');
       }
     } catch (error) {
-      toast({
-        title: "Submission Failed",
-        description: "There was an error submitting your application. Please try again.",
-        variant: "destructive"
-      });
+      // Handle error - could add error state here
+      console.error('Submission error:', error);
     } finally {
       setIsSubmitting(false);
     }

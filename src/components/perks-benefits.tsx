@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Home, Laptop, Brain, Clock, Code, DollarSign, Heart, BookOpen, Coffee, Plane, Shield, Zap } from 'lucide-react';
+import { Home, Laptop, Clock, BookOpen, Coffee, Shield, Zap } from 'lucide-react';
 
   const benefits = [
   {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Shield, Users, Globe, Target, Zap, Brain, Lock, Code, Cpu, Network } from 'lucide-react';
+import { Shield, Users, Globe, Target, Brain, Lock, Cpu, Network } from 'lucide-react';
 
 const principles = [
   {
