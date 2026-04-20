@@ -17,6 +17,12 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+
+  /* PurpleRain Brand Colors */
+  --pr-bg: oklch(0.141 0.005 285.823);
+  --pr-surface: oklch(0.21 0.006 285.885);
+  --pr-primary: oklch(85% 0.14 295);
+  --pr-ring: oklch(80% 0.16 290);
 }
 
 * {
@@ -32,31 +38,31 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
-    --card: 0 0% 3%;
-    --card-foreground: 0 0% 100%;
-    --popover: 0 0% 3%;
-    --popover-foreground: 0 0% 100%;
-    --primary: 262 83% 58%;
-    --primary-foreground: 0 0% 0%;
-    --secondary: 0 0% 6%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 0 0% 8%;
-    --muted-foreground: 0 0% 60%;
-    --accent: 0 0% 8%;
-    --accent-foreground: 0 0% 100%;
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 12%;
-    --input: 0 0% 8%;
-    --ring: 262 83% 58%;
-    --chart-1: 262 83% 58%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --radius: 0.5rem;
+    --radius: 0.625rem;
   }
 }
 
@@ -232,7 +238,7 @@ html {
 
 /* Modern Card Styles */
 .card-modern {
-  @apply bg-gray-950/50 border border-gray-900 rounded-xl backdrop-blur-sm transition-all duration-500 hover:border-gray-800 hover:bg-gray-950/80 hover:shadow-2xl hover:shadow-purple-500/5 hover:-translate-y-1;
+  @apply bg-card/50 border border-border rounded-xl backdrop-blur-sm transition-all duration-500 hover:border-muted-foreground/20 hover:bg-card/80 hover:shadow-2xl hover:shadow-purple-500/5 hover:-translate-y-1;
 }
 
 .card-interactive {
@@ -241,7 +247,29 @@ html {
 
 /* Glass Effect */
 .glass {
-  @apply bg-white/5 backdrop-blur-md border border-white/10;
+  background-color: color-mix(in oklab, var(--pr-surface), transparent 60%);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Premium Components */
+.premium-card {
+  @apply bg-card border border-border rounded-lg backdrop-blur-sm transition-all duration-300;
+}
+
+.premium-card:hover {
+  @apply border-muted-foreground/20;
+}
+
+.premium-input {
+  @apply bg-black/30 border border-white/10 backdrop-blur-sm;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.premium-input:focus {
+  border-color: color-mix(in oklab, var(--pr-primary), transparent 50%);
+  background-color: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--pr-ring), transparent 85%);
 }
 
 /* Gradient Text */
@@ -295,7 +323,14 @@ select:focus-visible {
 /* Modern form styles */
 .form-modern input,
 .form-modern textarea {
-  @apply bg-gray-900/50 border border-gray-800 rounded-lg px-4 py-3 text-white placeholder-gray-500 transition-all duration-300 focus:border-purple-500 focus:bg-gray-900 focus:shadow-lg focus:shadow-purple-500/10;
+  @apply bg-black/30 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 transition-all duration-300 backdrop-blur-sm;
+}
+
+.form-modern input:focus,
+.form-modern textarea:focus {
+  border-color: color-mix(in oklab, var(--pr-primary), transparent 50%);
+  background-color: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--pr-ring), transparent 85%);
 }
 
 /* Loading states */

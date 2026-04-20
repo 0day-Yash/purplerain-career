@@ -3,72 +3,24 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { MapPin, Clock, ChevronDown, ChevronUp, ArrowUpRight, DollarSign, Users, Code, Brain } from 'lucide-react';
+import { MapPin, Clock, ChevronDown, ChevronUp, ArrowUpRight, DollarSign, Users, Code, Brain, Briefcase, Info } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import jobsData from '@/data/jobs.json';
 
-interface JobRole {
-  id: string;
-  title: string;
-  department: string;
-  type: 'Full-Time' | 'Internship' | 'Contract';
-  location: 'Remote' | 'Hybrid' | 'On-site';
-  description: string;
-  fullDescription: string;
-  requirements: string[];
-  salary?: string;
-  icon: any;
-}
-
-const jobRoles: JobRole[] = [
-    // ... (job data remains the same)
-  {
-    id: '1',
-    title: 'Senior Security Engineer',
-    department: 'Engineering',
-    type: 'Full-Time',
-    location: 'Remote',
-    salary: '$140k - $180k',
-    icon: Code,
-    description: 'Lead the development of next-generation threat detection systems that protect enterprise infrastructure.',
-    fullDescription: 'As a Senior Security Engineer, youll architect and build the core security systems that power our platform. You\'ll work on cutting-edge threat detection algorithms, design secure APIs, and collaborate with our research team to stay ahead of emerging threats.',
-    requirements: ['7+ years in security engineering', 'Deep understanding of threat modeling', 'Experience with distributed systems', 'Proficiency in Go, Rust, or C++', 'Security certifications preferred']
-  },
-  {
-    id: '2',
-    title: 'Product Security Intern',
-    department: 'Security',
-    type: 'Internship',
-    location: 'Hybrid',
-    icon: Users,
-    description: 'Gain hands-on experience in product security while working on real-world security challenges.',
-    fullDescription: 'Join our security team for a 12-week intensive program where you\'ll learn from industry experts, conduct security assessments, and contribute to our security research initiatives. This isn\'t coffee-fetching—you\'ll be doing meaningful work from day one.',
-    requirements: ['Computer Science or Cybersecurity studies', 'Basic understanding of web security', 'Familiarity with Python or JavaScript', 'Passion for breaking things (ethically)', 'Strong problem-solving mindset']
-  },
-  {
-    id: '3',
-    title: 'Infrastructure Architect',
-    department: 'Engineering',
-    type: 'Full-Time',
-    location: 'Remote',
-    salary: '$160k - $200k',
-    icon: Brain,
-    description: 'Design and build the scalable infrastructure that powers our global security platform.',
-    fullDescription: 'We need a visionary Infrastructure Architect to design systems that can handle massive scale while maintaining the highest security standards. You\'ll work with cutting-edge cloud technologies and help define our technical architecture for the next decade.',
-    requirements: ['10+ years in infrastructure design', 'Expertise in cloud platforms (AWS, GCP)', 'Experience with Kubernetes and microservices', 'Strong background in security architecture', 'Leadership experience preferred']
-  },
-  {
-    id: '4',
-    title: 'Threat Intelligence Analyst',
-    department: 'Research',
-    type: 'Full-Time',
-    location: 'Remote',
-    salary: '$120k - $150k',
-    icon: Brain,
-    description: 'Research emerging threats and develop intelligence that keeps our clients ahead of attackers.',
-    fullDescription: 'As a Threat Intelligence Analyst, you\'ll be our eyes and ears in the cybersecurity landscape. You\'ll track threat actors, analyze attack patterns, and translate complex threat data into actionable intelligence for our platform and clients.',
-    requirements: ['5+ years in threat intelligence', 'Experience with threat hunting', 'Knowledge of APT groups and TTPs', 'Proficiency in data analysis tools', 'Strong written communication skills']
-  }
-];
+const iconMap: Record<string, any> = {
+  Security: Code,
+  Marketing: Briefcase,
+  Engineering: Brain,
+  Research: Brain,
+};
 
 export function OpenRoles() {
   const [filter, setFilter] = useState<string>('all');
@@ -81,7 +33,7 @@ export function OpenRoles() {
         if (entry.isIntersecting) {
           setIsVisible(true);
         } else {
-          setIsVisible(false); // Reset visibility when out of view
+          setIsVisible(false);
         }
       },
       { threshold: 0.1 }
@@ -95,7 +47,7 @@ export function OpenRoles() {
     };
   }, []);
 
-  const filteredRoles = jobRoles.filter(role =>
+  const filteredRoles = jobsData.jobs.filter(role =>
     filter === 'all' || role.type === filter || role.department === filter
   );
 
@@ -112,10 +64,10 @@ export function OpenRoles() {
   return (
     <section id="open-roles" className="py-32 bg-background text-foreground overflow-hidden">
       <div className="max-w-screen-xl mx-auto px-8">
-        <div className={`mb-20 ${isVisible ? 'animate-appear' : ''}`}>
+        <div className={`mb-20 ${isVisible ? 'animate-fade-in' : ''}`}>
           <div className="max-w-4xl">
             <h2 className="font-display text-6xl md:text-7xl mb-8 tracking-tight">
-              Open <span className="gradient-text">Positions</span>
+              Open <span className="bg-gradient-to-r from-pr-primary via-purple-300 to-blue-400 bg-clip-text text-transparent">Positions</span>
             </h2>
             <p className="font-body text-xl text-muted-foreground leading-relaxed">
               We're looking for exceptional people who want to build the future of cybersecurity.
@@ -125,12 +77,12 @@ export function OpenRoles() {
         </div>
 
         {/* Filter */}
-        <div className={`mb-16 ${isVisible ? 'animate-appear delay-200' : ''}`}>
+        <div className={`mb-16 ${isVisible ? 'animate-slide-in-up' : ''}`}>
           <Select value={filter} onValueChange={setFilter}>
-            <SelectTrigger className="w-64 bg-muted/50 border-border text-foreground rounded-lg h-12 font-medium backdrop-blur-sm hover:bg-muted transition-all duration-300">
+            <SelectTrigger className="w-64 premium-input text-foreground rounded-lg h-12 font-medium hover:bg-muted/50 transition-all duration-300">
               <SelectValue placeholder="Filter by category" />
             </SelectTrigger>
-            <SelectContent className="bg-background border-border rounded-lg backdrop-blur-md text-foreground">
+            <SelectContent className="bg-card border-border rounded-lg backdrop-blur-md text-foreground">
               <SelectItem value="all">All Positions</SelectItem>
               <SelectItem value="Full-Time">Full-Time</SelectItem>
               <SelectItem value="Internship">Internships</SelectItem>
@@ -145,20 +97,21 @@ export function OpenRoles() {
         <div className="space-y-6">
           {filteredRoles.map((role, index) => {
             const delay = 300 + index * 100;
-            // The change is here: added 'border border-white/20'
-            const cardClassName = `card-modern border border-white/20 ${isVisible ? `animate-appear delay-${delay}` : ''}`;
+            const cardClassName = `premium-card ${isVisible ? `animate-slide-in-up` : ''}`;
+            const RoleIcon = iconMap[role.department] || Code;
 
             return (
               <Card
                 key={role.id}
                 className={cardClassName}
+                style={{ animationDelay: `${delay}ms` }}
               >
                 <CardHeader className="pb-6">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-4 mb-4">
-                        <div className="w-12 h-12 rounded-lg bg-primary/10 border border-border flex items-center justify-center">
-                          <role.icon className="w-6 h-6 text-primary" />
+                        <div className="w-12 h-12 rounded-lg bg-pr-primary/10 border border-border flex items-center justify-center">
+                          <RoleIcon className="w-6 h-6 text-pr-primary" />
                         </div>
                         <div>
                           <CardTitle className="font-heading text-2xl mb-2">{role.title}</CardTitle>
@@ -175,7 +128,7 @@ export function OpenRoles() {
                               {role.location}
                             </div>
                             {role.salary && (
-                              <div className="flex items-center text-primary font-semibold">
+                              <div className="flex items-center text-pr-primary font-semibold">
                                 <DollarSign className="w-4 h-4 mr-1" />
                                 {role.salary}
                               </div>
@@ -193,10 +146,10 @@ export function OpenRoles() {
 
                 <CardContent className="pt-0">
                   <Collapsible>
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center flex-wrap gap-4">
                       <CollapsibleTrigger
                         onClick={() => toggleRole(role.id)}
-                        className="flex items-center text-primary hover:text-primary/90 transition-colors font-medium font-body"
+                        className="flex items-center text-pr-primary hover:text-pr-primary/90 transition-colors font-medium font-body"
                       >
                         {expandedRoles.has(role.id) ? 'Show Less' : 'View Details'}
                         {expandedRoles.has(role.id) ? (
@@ -206,10 +159,55 @@ export function OpenRoles() {
                         )}
                       </CollapsibleTrigger>
 
-                      <Button className="btn-primary group font-medium font-body">
-                        Apply Now
-                        <ArrowUpRight className="ml-2 w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
-                      </Button>
+                      <div className="flex gap-3">
+                        <Button 
+                          variant="outline"
+                          className="border-border text-foreground hover:bg-muted/50 font-medium font-body"
+                          onClick={() => window.location.href = `/jobs/${role.id}`}
+                        >
+                          Full Details
+                        </Button>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button 
+                              className="bg-white text-black font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] group"
+                            >
+                              Apply Now
+                              <ArrowUpRight className="ml-2 w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="bg-card border-border max-w-lg">
+                            <DialogHeader>
+                              <DialogTitle className="text-xl font-heading">Application Instructions</DialogTitle>
+                              <DialogDescription className="text-muted-foreground">
+                                Please follow these steps before scheduling your interview
+                              </DialogDescription>
+                            </DialogHeader>
+                            <div className="space-y-4 py-4">
+                              <div className="p-4 bg-muted/30 rounded-lg border border-border">
+                                <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
+                                  <Info className="w-4 h-4 text-pr-primary" />
+                                  Before Scheduling:
+                                </h4>
+                                <ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside">
+                                  <li>Upload your resume and portfolio to <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" className="text-pr-primary hover:underline font-medium">Google Drive</a></li>
+                                  <li>Make the folder/files publicly accessible</li>
+                                  <li>Copy the share link</li>
+                                  <li>Position: <span className="font-semibold text-foreground">{role.title}</span></li>
+                                  <li>Include the Google Drive link in your meeting notes</li>
+                                </ol>
+                              </div>
+                              <Button 
+                                className="w-full bg-white text-black font-semibold py-3 rounded-lg transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+                                onClick={() => window.open(role.interviewLink, '_blank')}
+                              >
+                                Continue to Schedule Interview
+                                <ArrowUpRight className="ml-2 w-4 h-4" />
+                              </Button>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      </div>
                     </div>
 
                     <CollapsibleContent className="mt-8 pt-8 border-t border-border">
@@ -224,7 +222,7 @@ export function OpenRoles() {
                           <ul className="space-y-3">
                             {role.requirements.map((req, index) => (
                               <li key={index} className="font-body text-muted-foreground flex items-start">
-                                <span className="text-primary mr-3 mt-1 font-bold">•</span>
+                                <span className="text-pr-primary mr-3 mt-1 font-bold">•</span>
                                 {req}
                               </li>
                             ))}

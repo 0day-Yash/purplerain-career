@@ -1,0 +1,133 @@
+{
+  "jobs": [
+    {
+      "id": "vapt-intern",
+      "title": "VAPT Intern",
+      "department": "Security",
+      "type": "Internship",
+      "location": "Remote",
+      "description": "Join our security team for hands-on experience in Vulnerability Assessment and Penetration Testing. Work on real-world security challenges.",
+      "fullDescription": "As a VAPT Intern, you'll work alongside our security experts to identify vulnerabilities in web applications, networks, and infrastructure. This is a 3-6 month intensive program where you'll learn industry-standard tools and methodologies while contributing to actual client projects. You'll gain practical experience in ethical hacking, security assessment, and vulnerability remediation.",
+      "requirements": [
+        "Currently pursuing or recently completed degree in Computer Science, Cybersecurity, or related field",
+        "Basic understanding of web application security (OWASP Top 10)",
+        "Familiarity with security tools like Burp Suite, Nmap, or Metasploit",
+        "Knowledge of at least one scripting language (Python, Bash, or PowerShell)",
+        "Strong analytical and problem-solving skills",
+        "Excellent written and verbal communication skills",
+        "Passion for cybersecurity and ethical hacking"
+      ],
+      "responsibilities": [
+        "Conduct vulnerability assessments on web applications and networks",
+        "Perform penetration testing under supervision of senior security engineers",
+        "Document findings and create detailed security reports",
+        "Assist in security research and tool development",
+        "Participate in security training and knowledge sharing sessions",
+        "Help maintain security testing infrastructure"
+      ],
+      "benefits": [
+        "Hands-on experience with enterprise security tools",
+        "Mentorship from experienced security professionals",
+        "Opportunity to work on real client projects",
+        "Flexible remote work schedule",
+        "Certificate of completion and recommendation letter",
+        "Potential for full-time conversion based on performance"
+      ],
+      "interviewLink": "https://cal.com/0day-yash/interview"
+    },
+    {
+      "id": "social-media-lead",
+      "title": "Social Media Lead",
+      "department": "Marketing",
+      "type": "Full-Time",
+      "location": "Remote",
+      "salary": "$50k - $70k",
+      "description": "Lead our social media strategy and build our brand presence across platforms. Create engaging content that resonates with the cybersecurity community.",
+      "fullDescription": "We're looking for a creative and strategic Social Media Lead to build and execute our social media strategy. You'll be responsible for growing our online presence, engaging with the cybersecurity community, and establishing PurpleRain as a thought leader in the security space. This role requires a unique blend of creativity, technical understanding, and data-driven decision making.",
+      "requirements": [
+        "3+ years of experience in social media management, preferably in tech or cybersecurity",
+        "Proven track record of growing social media presence and engagement",
+        "Strong understanding of social media platforms (LinkedIn, Twitter, Instagram, YouTube)",
+        "Experience with social media analytics and reporting tools",
+        "Excellent writing and communication skills",
+        "Basic understanding of cybersecurity concepts and terminology",
+        "Experience with content creation tools (Canva, Adobe Creative Suite, etc.)",
+        "Data-driven mindset with ability to analyze metrics and optimize strategy"
+      ],
+      "responsibilities": [
+        "Develop and execute comprehensive social media strategy across all platforms",
+        "Create engaging content including posts, videos, infographics, and articles",
+        "Manage social media calendar and ensure consistent posting schedule",
+        "Engage with community, respond to comments, and build relationships",
+        "Monitor social media trends and competitor activities",
+        "Analyze performance metrics and provide regular reports",
+        "Collaborate with marketing and product teams on campaigns",
+        "Manage social media advertising budget and campaigns"
+      ],
+      "benefits": [
+        "Competitive salary with performance bonuses",
+        "Fully remote position with flexible hours",
+        "Professional development budget for courses and conferences",
+        "Latest tools and software for content creation",
+        "Health insurance coverage",
+        "4 weeks paid vacation",
+        "Opportunity to shape brand voice and strategy"
+      ],
+      "interviewLink": "https://cal.com/0day-yash/interview"
+    },
+    {
+      "id": "regional-cmo-apac",
+      "title": "Chief Marketing Officer - APAC Region",
+      "department": "Marketing",
+      "type": "Full-Time",
+      "location": "Remote (APAC Region)",
+      "salary": "$120k - $160k",
+      "description": "Lead marketing strategy and execution for the Asia-Pacific region. Build brand awareness and drive growth in key Asian markets.",
+      "fullDescription": "We're seeking an experienced Chief Marketing Officer to lead our expansion in the Asia-Pacific region. This role requires deep understanding of Asian markets, cultural nuances, and business practices. You'll be responsible for developing and executing regional marketing strategy, building partnerships, and establishing PurpleRain as a leading cybersecurity brand across APAC markets including India, Singapore, Japan, South Korea, and Southeast Asia.",
+      "requirements": [
+        "10+ years of marketing experience with at least 5 years in leadership roles",
+        "Proven track record of successful marketing campaigns in APAC markets",
+        "Deep understanding of Asian business culture and market dynamics",
+        "Experience in B2B technology or cybersecurity marketing",
+        "Strong network in the Asian tech and business community",
+        "Fluency in English; additional Asian languages (Mandarin, Japanese, Korean, Hindi) highly preferred",
+        "Experience with digital marketing, content strategy, and demand generation",
+        "Strong analytical skills and data-driven decision making",
+        "Excellent leadership and team building capabilities"
+      ],
+      "responsibilities": [
+        "Develop and execute comprehensive marketing strategy for APAC region",
+        "Build and lead regional marketing team",
+        "Establish partnerships with local businesses, resellers, and influencers",
+        "Adapt global brand messaging for regional markets",
+        "Drive demand generation and lead acquisition in target markets",
+        "Manage regional marketing budget and ROI optimization",
+        "Represent PurpleRain at regional conferences and events",
+        "Collaborate with sales team on regional go-to-market strategy",
+        "Monitor market trends and competitive landscape in APAC",
+        "Report on regional marketing performance to executive team"
+      ],
+      "benefits": [
+        "Competitive executive compensation package",
+        "Equity/stock options in the company",
+        "Fully remote with flexibility for regional travel",
+        "Generous professional development budget",
+        "Health insurance and wellness benefits",
+        "4 weeks paid vacation plus regional holidays",
+        "Opportunity to build and lead regional operations",
+        "Direct impact on company's international growth"
+      ],
+      "interviewLink": "https://cal.com/0day-yash/interview",
+      "preferredRegions": [
+        "India",
+        "Singapore",
+        "Japan",
+        "South Korea",
+        "Southeast Asia",
+        "Hong Kong",
+        "Taiwan",
+        "Australia"
+      ]
+    }
+  ]
+}

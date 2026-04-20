@@ -1,26 +1,16 @@
-import { HeroSection } from '@/components/hero-section';
-import { OpenRoles } from '@/components/open-roles';
-import { LifeAtPurpleRain } from '@/components/life-at-purplerain';
-import { PerksAndBenefits } from '@/components/perks-benefits';
-import { ResumeSubmission } from '@/components/resume-submission';
-import { MeetTheTeam } from '@/components/meet-team';
-import { Footer } from '@/components/footer';
-import { Toaster } from '@/components/ui/toaster';
-import { SiteNavbar } from './components/site-navbar';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Home } from './pages/Home';
+import { JobDetail } from './pages/JobDetail';
+import './App.css';
 
 function App() {
   return (
-    <div className="min-h-screen bg-slate-900">
-      <SiteNavbar/>
-      <HeroSection />
-      <OpenRoles />
-      <LifeAtPurpleRain />
-      <PerksAndBenefits />
-      <ResumeSubmission />
-      <MeetTheTeam />
-      <Footer />
-      <Toaster />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/jobs/:jobId" element={<JobDetail />} />
+      </Routes>
+    </Router>
   );
 }
 

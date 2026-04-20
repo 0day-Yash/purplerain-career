@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Shield, ArrowDown, ChevronRight, Zap } from 'lucide-react';
+import { ArrowDown, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export function HeroSection() {
@@ -43,22 +43,22 @@ export function HeroSection() {
 <div className="absolute top-20 right-8 w-0.5 h-34 bg-gradient-to-b from-indigo-500/25 to-transparent animate-rise-up" style={{ animationDelay: '7.6s' }}></div>
 
       {/* Enhanced glow effects */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/3 rounded-full blur-3xl animate-pulse-glow"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pr-primary/3 rounded-full blur-3xl animate-pulse-glow"></div>
       <div className="absolute top-1/3 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-blue-500/2 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: '1.5s' }}></div>
 
       <div className="relative z-10 text-center max-w-7xl mx-auto px-6">
         <div className={`transition-all duration-1200 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
           <div className="mb-16">
             {/* Enhanced logo container */}
-            <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-500/10 to-blue-500/5 mb-12 backdrop-blur-sm animate-scale-in shadow-2xl shadow-purple-500/5">
-              <Shield className="w-10 h-10 text-purple-400 icon-hover" />
+            <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl border border-pr-primary/20 bg-gradient-to-br from-pr-primary/10 to-blue-500/5 mb-12 backdrop-blur-sm animate-scale-in shadow-2xl shadow-pr-primary/5">
+              <img src="/favicon.svg" alt="PurpleRain" className="w-12 h-12" />
             </div>
             
             {/* Enhanced typography with better spacing */}
             <h1 className="font-display text-6xl md:text-8xl lg:text-9xl text-white mb-10 tracking-tight leading-[0.85] animate-fade-in-up">
               Defend the
               <br />
-              <span className="bg-gradient-to-r from-purple-400 via-purple-300 to-blue-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-pr-primary via-purple-300 to-blue-400 bg-clip-text text-transparent">
                 Digital Future
               </span>
             </h1>
@@ -86,7 +86,7 @@ export function HeroSection() {
             
             <Button 
               variant="ghost" 
-              className="text-gray-300 hover:text-white border border-gray-700/50 hover:border-gray-600 bg-gray-900/20 hover:bg-gray-800/40 font-semibold px-10 py-4 rounded-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-purple-500/5 active:scale-[0.98] text-lg group backdrop-blur-sm"
+              className="text-gray-300 hover:text-white border border-border hover:border-muted-foreground/20 bg-muted/20 hover:bg-muted/40 font-semibold px-10 py-4 rounded-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-pr-primary/5 active:scale-[0.98] text-lg group backdrop-blur-sm"
             >
               Our Mission
               <ChevronRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
