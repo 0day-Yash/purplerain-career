@@ -133,6 +133,11 @@ export function OpenRoles() {
                                 {role.salary}
                               </div>
                             )}
+                            {role.status === 'Closed' && (
+                              <Badge variant="destructive" className="bg-red-500/10 text-red-500 border-red-500/20 rounded-md px-3 py-1 font-semibold">
+                                Closed
+                              </Badge>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -167,46 +172,55 @@ export function OpenRoles() {
                         >
                           Full Details
                         </Button>
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button 
-                              className="bg-white text-black font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] group"
-                            >
-                              Apply Now
-                              <ArrowUpRight className="ml-2 w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className="bg-card border-border max-w-lg">
-                            <DialogHeader>
-                              <DialogTitle className="text-xl font-heading">Application Instructions</DialogTitle>
-                              <DialogDescription className="text-muted-foreground">
-                                Please follow these steps before scheduling your interview
-                              </DialogDescription>
-                            </DialogHeader>
-                            <div className="space-y-4 py-4">
-                              <div className="p-4 bg-muted/30 rounded-lg border border-border">
-                                <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
-                                  <Info className="w-4 h-4 text-pr-primary" />
-                                  Before Scheduling:
-                                </h4>
-                                <ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside">
-                                  <li>Upload your resume and portfolio to <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" className="text-pr-primary hover:underline font-medium">Google Drive</a></li>
-                                  <li>Make the folder/files publicly accessible</li>
-                                  <li>Copy the share link</li>
-                                  <li>Position: <span className="font-semibold text-foreground">{role.title}</span></li>
-                                  <li>Include the Google Drive link in your meeting notes</li>
-                                </ol>
-                              </div>
+                        {role.status === 'Closed' ? (
+                          <Button 
+                            disabled
+                            className="bg-muted text-muted-foreground/60 border border-border font-semibold px-8 py-3 rounded-lg cursor-not-allowed"
+                          >
+                            Applications Closed
+                          </Button>
+                        ) : (
+                          <Dialog>
+                            <DialogTrigger asChild>
                               <Button 
-                                className="w-full bg-white text-black font-semibold py-3 rounded-lg transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
-                                onClick={() => window.open(role.interviewLink, '_blank')}
+                                className="bg-white text-black font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] group"
                               >
-                                Continue to Schedule Interview
-                                <ArrowUpRight className="ml-2 w-4 h-4" />
+                                Apply Now
+                                <ArrowUpRight className="ml-2 w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
                               </Button>
-                            </div>
-                          </DialogContent>
-                        </Dialog>
+                            </DialogTrigger>
+                            <DialogContent className="bg-card border-border max-w-lg">
+                              <DialogHeader>
+                                <DialogTitle className="text-xl font-heading">Application Instructions</DialogTitle>
+                                <DialogDescription className="text-muted-foreground">
+                                  Please follow these steps before scheduling your interview
+                                </DialogDescription>
+                              </DialogHeader>
+                              <div className="space-y-4 py-4">
+                                <div className="p-4 bg-muted/30 rounded-lg border border-border">
+                                  <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
+                                    <Info className="w-4 h-4 text-pr-primary" />
+                                    Before Scheduling:
+                                  </h4>
+                                  <ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside">
+                                    <li>Upload your resume and portfolio to <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" className="text-pr-primary hover:underline font-medium">Google Drive</a></li>
+                                    <li>Make the folder/files publicly accessible</li>
+                                    <li>Copy the share link</li>
+                                    <li>Position: <span className="font-semibold text-foreground">{role.title}</span></li>
+                                    <li>Include the Google Drive link in your meeting notes</li>
+                                  </ol>
+                                </div>
+                                <Button 
+                                  className="w-full bg-white text-black font-semibold py-3 rounded-lg transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+                                  onClick={() => window.open(role.interviewLink, '_blank')}
+                                >
+                                  Continue to Schedule Interview
+                                  <ArrowUpRight className="ml-2 w-4 h-4" />
+                                </Button>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
+                        )}
                       </div>
                     </div>
 

@@ -88,6 +88,11 @@ export function JobDetail() {
                       {job.salary}
                     </div>
                   )}
+                  {job.status === 'Closed' && (
+                    <Badge variant="destructive" className="bg-red-500/10 text-red-500 border-red-500/20 rounded-md px-3 py-1 font-semibold">
+                      Closed
+                    </Badge>
+                  )}
                 </div>
               </div>
             </div>
@@ -96,29 +101,50 @@ export function JobDetail() {
               {job.description}
             </p>
 
-            <div className="mb-8 p-6 bg-muted/20 rounded-xl border border-border backdrop-blur-sm">
-              <h3 className="font-heading text-lg mb-4">Application Instructions</h3>
-              <ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside">
-                <li>Upload your resume, portfolio, and any relevant documents to <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" className="text-pr-primary hover:underline font-medium">Google Drive</a></li>
-                <li>Make the folder/files publicly accessible (Anyone with the link can view)</li>
-                <li>Copy the shareable link</li>
-                <li>When scheduling your interview, include:
-                  <ul className="ml-6 mt-2 space-y-1 list-disc">
-                    <li>Position applying for: <span className="font-semibold text-foreground">{job.title}</span></li>
-                    <li>Your Google Drive link with resume and documents</li>
-                  </ul>
-                </li>
-              </ol>
-            </div>
+            {job.status === 'Closed' ? (
+              <div className="mb-8 p-6 bg-red-500/5 rounded-xl border border-red-500/10 backdrop-blur-sm">
+                <h3 className="font-heading text-lg text-red-500 mb-2 flex items-center gap-2">
+                  Applications Closed
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  We are no longer accepting applications for this position. Thank you for your interest in PurpleRain Tech.
+                </p>
+              </div>
+            ) : (
+              <div className="mb-8 p-6 bg-muted/20 rounded-xl border border-border backdrop-blur-sm">
+                <h3 className="font-heading text-lg mb-4">Application Instructions</h3>
+                <ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside">
+                  <li>Upload your resume, portfolio, and any relevant documents to <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" className="text-pr-primary hover:underline font-medium">Google Drive</a></li>
+                  <li>Make the folder/files publicly accessible (Anyone with the link can view)</li>
+                  <li>Copy the shareable link</li>
+                  <li>When scheduling your interview, include:
+                    <ul className="ml-6 mt-2 space-y-1 list-disc">
+                      <li>Position applying for: <span className="font-semibold text-foreground">{job.title}</span></li>
+                      <li>Your Google Drive link with resume and documents</li>
+                    </ul>
+                  </li>
+                </ol>
+              </div>
+            )}
 
-            <Button 
-              size="lg"
-              className="bg-white text-black font-semibold px-10 py-4 rounded-lg transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] group"
-              onClick={() => window.open(job.interviewLink, '_blank')}
-            >
-              Apply for this Position
-              <ArrowUpRight className="ml-2 w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
-            </Button>
+            {job.status === 'Closed' ? (
+              <Button 
+                size="lg"
+                disabled
+                className="bg-muted text-muted-foreground/60 border border-border font-semibold px-10 py-4 rounded-lg cursor-not-allowed"
+              >
+                Applications Closed
+              </Button>
+            ) : (
+              <Button 
+                size="lg"
+                className="bg-white text-black font-semibold px-10 py-4 rounded-lg transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] group"
+                onClick={() => window.open(job.interviewLink, '_blank')}
+              >
+                Apply for this Position
+                <ArrowUpRight className="ml-2 w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+              </Button>
+            )}
           </div>
         </div>
       </section>
@@ -177,15 +203,24 @@ export function JobDetail() {
                 <CardContent className="p-6">
                   <h3 className="font-heading text-lg mb-6">Apply Now</h3>
                   
-                  <Button 
-                    className="w-full bg-white text-black font-semibold py-3 rounded-lg transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] group mb-4"
-                    onClick={() => window.open(job.interviewLink, '_blank')}
-                  >
-                    Schedule Interview
-                    <ArrowUpRight className="ml-2 w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
-                  </Button>
+                  {job.status === 'Closed' ? (
+                    <Button 
+                      disabled
+                      className="w-full bg-muted text-muted-foreground/60 border border-border font-semibold py-3 rounded-lg cursor-not-allowed mb-4"
+                    >
+                      Closed
+                    </Button>
+                  ) : (
+                    <Button 
+                      className="w-full bg-white text-black font-semibold py-3 rounded-lg transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] group mb-4"
+                      onClick={() => window.open(job.interviewLink, '_blank')}
+                    >
+                      Schedule Interview
+                      <ArrowUpRight className="ml-2 w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+                    </Button>
+                  )}
                   <p className="text-xs text-muted-foreground text-center">
-                    We'll review your application within 48 hours
+                    {job.status === 'Closed' ? 'Applications are currently closed' : "We'll review your application within 48 hours"}
                   </p>
 
                   {job.preferredRegions && (
