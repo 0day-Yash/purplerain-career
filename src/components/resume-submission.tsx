@@ -1,16 +1,18 @@
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
+import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Upload, CheckCircle, FileText, Send, User, Mail, Linkedin, Github, ArrowRight, AlertCircle } from 'lucide-react';
+import { Upload, CheckCircle, FileText, Send, User, Mail, Linkedin, Github, AlertCircle } from 'lucide-react';
+import { SectionShell } from './landing-primitives/section-shell';
+import { LandingHeading } from './landing-primitives/landing-heading';
+
+const B = "border-[hsl(0_0%_18%)]";
 
 export function ResumeSubmission() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -19,26 +21,6 @@ export function ResumeSubmission() {
     message: ''
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        } else {
-          setIsVisible(false); // Reset visibility when out of view
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    const element = document.getElementById('resume-section');
-    if (element) observer.observe(element);
-
-    return () => {
-      if (element) observer.unobserve(element);
-    };
-  }, []);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -49,7 +31,7 @@ export function ResumeSubmission() {
     
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
-    } else if (!/^[^s@]+@[^s@]+.[^s@]+$/.test(formData.email)) {
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
     }
     
@@ -71,7 +53,6 @@ export function ResumeSubmission() {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -81,14 +62,12 @@ export function ResumeSubmission() {
     e.preventDefault();
     
     if (!validateForm()) {
-      // Show error - form validation failed
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      // Create FormData for Netlify Forms
       const submitData = new FormData();
       submitData.append('form-name', 'resume-submission');
       submitData.append('fullName', formData.fullName);
@@ -101,7 +80,6 @@ export function ResumeSubmission() {
         submitData.append('resume', selectedFile);
       }
 
-      // Submit to Netlify Forms endpoint
       const response = await fetch('/', {
         method: 'POST',
         body: submitData
@@ -113,7 +91,6 @@ export function ResumeSubmission() {
         throw new Error('Submission failed');
       }
     } catch (error) {
-      // Handle error - could add error state here
       console.error('Submission error:', error);
     } finally {
       setIsSubmitting(false);
@@ -161,266 +138,260 @@ export function ResumeSubmission() {
 
   if (isSubmitted) {
     return (
-      <section className="py-32 bg-background text-foreground relative overflow-hidden">
-        {/* Background Grid */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
-        
-        <div className="max-w-2xl mx-auto px-8 relative z-10">
-          <div className="text-center animate-appear-zoom">
-            <div className="w-20 h-20 rounded-lg bg-brand/10 border border-brand/20 flex items-center justify-center mx-auto mb-8">
-              <CheckCircle className="w-10 h-10 text-brand" />
-            </div>
-            <h3 className="font-display text-5xl mb-6 tracking-tight">Application Received</h3>
-            <p className="font-body text-lg text-muted-foreground mb-12 leading-relaxed max-w-md mx-auto">
-              We'll review your application and respond within 48 hours if there's a potential match.
-            </p>
-            <Button 
-              onClick={() => {
-                setIsSubmitted(false);
-                setFormData({
-                  fullName: '',
-                  email: '',
-                  linkedin: '',
-                  portfolio: '',
-                  message: ''
-                });
-                setSelectedFile(null);
-                setErrors({});
-              }}
-              variant="secondary"
-              className="font-medium px-8 py-4 rounded-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-            >
-              Submit Another Application
-            </Button>
-          </div>
+      <SectionShell container="full" id="resume-section" className="gap-0 border-t border-b border-[hsl(0_0%_18%)] bg-[--surface-primary]">
+        <div className="w-full max-w-xl mx-auto text-center space-y-6 py-16 px-6">
+          <figure
+            className={`flex size-12 items-center justify-center border ${B} text-[hsl(270_70%_75%)] mx-auto`}
+            style={{ background: "hsl(270 70% 60% / 0.08)" }}
+          >
+            <CheckCircle className="size-6" />
+          </figure>
+          <h3 className="text-2xl font-medium text-[--text-primary]">Application Received</h3>
+          <p className="text-sm text-[--text-tertiary] leading-relaxed">
+            We'll review your application and respond within 48 hours if there's a potential match.
+          </p>
+          <button
+            onClick={() => {
+              setIsSubmitted(false);
+              setFormData({
+                fullName: '',
+                email: '',
+                linkedin: '',
+                portfolio: '',
+                message: ''
+              });
+              setSelectedFile(null);
+              setErrors({});
+            }}
+            className="flex items-center justify-center h-12 px-6 text-sm font-medium transition-colors border border-[hsl(0_0%_18%)] text-[--text-secondary] hover:bg-[--surface-secondary] cursor-pointer mx-auto"
+          >
+            Submit Another Application
+          </button>
         </div>
-      </section>
+      </SectionShell>
     );
   }
 
   return (
-    <section id="resume-section" className="py-32 bg-background text-foreground relative overflow-hidden">
-      {/* Background Grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
-      
-      <div className="max-w-4xl mx-auto px-8 relative z-10">
-        {/* Header */}
-        <div className={`text-center mb-20 ${isVisible ? 'animate-appear' : ''}`}>
-          <h2 className="font-display text-7xl md:text-8xl mb-8 tracking-tight">
-            Apply <span className="gradient-text">Now</span>
-          </h2>
-          <p className="font-body text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Ready to defend the digital future? Send us your details and let's start the conversation.
-          </p>
-        </div>
+    <SectionShell container="full" id="resume-section" className="gap-0 border-t border-b border-[hsl(0_0%_18%)] bg-[--surface-primary]">
+      {/* Top Monospace Bar */}
+      <div className={`w-full flex items-center justify-between px-6 py-3 border-b ${B}`}>
+        <span className="text-xs font-mono text-[--text-tertiary] uppercase tracking-widest">
+          GENERAL / TALENT POOL
+        </span>
+        <span className="text-xs font-mono text-[hsl(var(--accent-500))]">
+          APPLY NOW
+        </span>
+      </div>
 
-        {/* Hidden Netlify Form for bot detection */}
-        <form name="resume-submission" data-netlify="true" netlify-honeypot="bot-field" hidden>
-          <input type="text" name="fullName" />
-          <input type="email" name="email" />
-          <input type="text" name="linkedin" />
-          <input type="text" name="portfolio" />
-          <textarea name="message"></textarea>
-          <input type="file" name="resume" />
-        </form>
+      {/* Heading */}
+      <div className={`w-full px-6 py-12 border-b ${B} text-center`}>
+        <LandingHeading
+          tag="GENERAL APPLICATION"
+          title="Submit Your Resume"
+          subtitle="Don't see an exact role match above? Send us your details and let us know how you can contribute."
+        />
+      </div>
 
-        {/* Application Form */}
-        <div className={`${isVisible ? 'animate-appear delay-200' : ''}`}>
-          <form onSubmit={handleSubmit} className="space-y-12" name="resume-submission" data-netlify="true" netlify-honeypot="bot-field">
-            <input type="hidden" name="form-name" value="resume-submission" />
-            <input type="hidden" name="bot-field" />
-            
-            {/* Personal Information */}
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="space-y-4">
-                <Label htmlFor="fullName" className="font-heading text-lg flex items-center gap-3">
-                  <User className="w-5 h-5 text-primary" />
-                  Full Name *
-                </Label>
-                <Input 
-                  id="fullName"
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleInputChange}
-                  required 
-                  placeholder="Enter your full name"
-                  className={`bg-muted/20 border-2 ${errors.fullName ? 'border-destructive' : 'border-border'} hover:border-primary focus:border-primary rounded-lg px-6 py-4 text-foreground placeholder-muted-foreground transition-all duration-300 focus:bg-muted/30 text-lg h-14`}
-                />
-                {errors.fullName && (
-                  <p className="text-destructive text-sm flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4" />
-                    {errors.fullName}
-                  </p>
-                )}
-              </div>
-              <div className="space-y-4">
-                <Label htmlFor="email" className="font-heading text-lg flex items-center gap-3">
-                  <Mail className="w-5 h-5 text-primary" />
-                  Email Address *
-                </Label>
-                <Input 
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required 
-                  placeholder="your.email@example.com"
-                  className={`bg-muted/20 border-2 ${errors.email ? 'border-destructive' : 'border-border'} hover:border-primary focus:border-primary rounded-lg px-6 py-4 text-foreground placeholder-muted-foreground transition-all duration-300 focus:bg-muted/30 text-lg h-14`}
-                />
-                {errors.email && (
-                  <p className="text-destructive text-sm flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4" />
-                    {errors.email}
-                  </p>
-                )}
-              </div>
-            </div>
+      {/* Hidden Netlify Form */}
+      <form name="resume-submission" data-netlify="true" netlify-honeypot="bot-field" hidden>
+        <input type="text" name="fullName" />
+        <input type="email" name="email" />
+        <input type="text" name="linkedin" />
+        <input type="text" name="portfolio" />
+        <textarea name="message" />
+        <input type="file" name="resume" />
+      </form>
 
-            {/* Professional Links */}
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="space-y-4">
-                <Label htmlFor="linkedin" className="font-heading text-lg flex items-center gap-3">
-                  <Linkedin className="w-5 h-5 text-primary" />
-                  LinkedIn Profile
-                </Label>
-                <Input 
-                  id="linkedin"
-                  name="linkedin"
-                  value={formData.linkedin}
-                  onChange={handleInputChange}
-                  placeholder="linkedin.com/in/yourprofile"
-                  className="bg-muted/20 border-2 border-border hover:border-primary focus:border-primary rounded-lg px-6 py-4 text-foreground placeholder-muted-foreground transition-all duration-300 focus:bg-muted/30 text-lg h-14"
-                />
-              </div>
-              <div className="space-y-4">
-                <Label htmlFor="portfolio" className="font-heading text-lg flex items-center gap-3">
-                  <Github className="w-5 h-5 text-primary" />
-                  GitHub / Portfolio
-                </Label>
-                <Input 
-                  id="portfolio"
-                  name="portfolio"
-                  value={formData.portfolio}
-                  onChange={handleInputChange}
-                  placeholder="github.com/yourprofile"
-                  className="bg-muted/20 border-2 border-border hover:border-primary focus:border-primary rounded-lg px-6 py-4 text-foreground placeholder-muted-foreground transition-all duration-300 focus:bg-muted/30 text-lg h-14"
-                />
-              </div>
-            </div>
-
-            {/* Resume Upload */}
-            <div className="space-y-4">
-              <Label className="font-heading text-lg flex items-center gap-3">
-                <FileText className="w-5 h-5 text-primary" />
-                Resume / CV *
+      {/* Form Container */}
+      <div className="w-full max-w-4xl mx-auto p-6 md:p-10">
+        <form onSubmit={handleSubmit} className={`border ${B} bg-[--surface-primary] p-6 md:p-10 space-y-6`} name="resume-submission" data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="resume-submission" />
+          <input type="hidden" name="bot-field" />
+          
+          {/* Name & Email */}
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="fullName" className="text-xs font-mono text-[--text-secondary] uppercase flex items-center gap-2">
+                <User className="size-3.5 text-[hsl(var(--accent-500))]" />
+                Full Name *
               </Label>
-              <div 
-                className={`relative border-2 border-dashed rounded-lg p-16 text-center transition-all duration-300 ${
-                  dragActive 
-                    ? 'border-primary bg-primary/5' 
-                    : errors.file
-                    ? 'border-destructive bg-destructive/5'
-                    : 'border-border hover:border-primary bg-muted/20 hover:bg-muted/30'
-                }`}
-                onDragEnter={handleDrag}
-                onDragLeave={handleDrag}
-                onDragOver={handleDrag}
-                onDrop={handleDrop}
-              >
-                {selectedFile ? (
-                  <div className="flex items-center justify-center text-primary">
-                    <FileText className="w-8 h-8 mr-4" />
-                    <div>
-                      <p className="font-heading text-xl">{selectedFile.name}</p>
-                      <p className="font-body text-muted-foreground text-sm mt-1">
-                        {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
-                      </p>
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    <Upload className="w-16 h-16 text-muted-foreground mx-auto mb-6" />
-                    <p className="font-heading text-xl mb-4">Drop your resume here</p>
-                    <p className="font-body text-muted-foreground mb-8">or click to browse files</p>
-                    <Button 
-                      type="button" 
-                      variant="secondary"
-                      className="font-medium px-8 py-3 rounded-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-                    >
-                      <label htmlFor="resumeFile" className="cursor-pointer">
-                        Choose File
-                      </label>
-                    </Button>
-                    <input
-                      id="resumeFile"
-                      type="file"
-                      accept=".pdf,.doc,.docx"
-                      onChange={handleFileChange}
-                      className="hidden"
-                    />
-                    <p className="font-mono text-sm text-muted-foreground mt-4">PDF, DOC, or DOCX • Max 10MB</p>
-                  </div>
-                )}
-              </div>
-              {errors.file && (
-                <p className="text-destructive text-sm flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4" />
-                  {errors.file}
-                </p>
-              )}
-            </div>
-
-            {/* Message */}
-            <div className="space-y-4">
-              <Label htmlFor="message" className="font-heading text-lg">
-                Why PurpleRain? *
-              </Label>
-              <Textarea 
-                id="message"
-                name="message"
-                value={formData.message}
+              <Input 
+                id="fullName"
+                name="fullName"
+                value={formData.fullName}
                 onChange={handleInputChange}
                 required 
-                rows={6}
-                placeholder="Tell us what excites you about cybersecurity and why you want to join our mission..."
-                className={`bg-muted/20 border-2 ${errors.message ? 'border-destructive' : 'border-border'} hover:border-primary focus:border-primary rounded-lg px-6 py-4 text-foreground placeholder-muted-foreground transition-all duration-300 focus:bg-muted/30 text-lg resize-none`}
+                placeholder="Jane Doe"
+                className={`bg-[--surface-secondary] border ${B} focus:border-[hsl(var(--accent-500))] rounded-none px-4 py-3 text-sm text-[--text-primary] placeholder:text-[--text-tertiary] h-11`}
               />
-              {errors.message && (
-                <p className="text-destructive text-sm flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4" />
-                  {errors.message}
+              {errors.fullName && (
+                <p className="text-red-400 text-xs font-mono flex items-center gap-1">
+                  <AlertCircle className="size-3" />
+                  {errors.fullName}
                 </p>
               )}
             </div>
 
-            {/* Submit Button */}
-            <div className="text-center pt-8">
-              <Button 
-                type="submit" 
-                disabled={isSubmitting}
-                className="btn-primary group text-lg font-semibold h-16 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isSubmitting ? (
-                  <>
-                    <div className="w-6 h-6 border-2 border-foreground border-t-transparent rounded-full animate-spin mr-3"></div>
-                    Submitting...
-                  </>
-                ) : (
-                  <>
-                    <Send className="mr-3 w-6 h-6 group-hover:translate-x-1 transition-transform duration-300" />
-                    Submit Application
-                    <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-1 transition-transform duration-300" />
-                  </>
-                )}
-              </Button>
-              <p className="font-body text-muted-foreground text-sm mt-6">
-                We'll respond within 48 hours if there's a potential match
-              </p>
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-xs font-mono text-[--text-secondary] uppercase flex items-center gap-2">
+                <Mail className="size-3.5 text-[hsl(var(--accent-500))]" />
+                Email Address *
+              </Label>
+              <Input 
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                required 
+                placeholder="jane@example.com"
+                className={`bg-[--surface-secondary] border ${B} focus:border-[hsl(var(--accent-500))] rounded-none px-4 py-3 text-sm text-[--text-primary] placeholder:text-[--text-tertiary] h-11`}
+              />
+              {errors.email && (
+                <p className="text-red-400 text-xs font-mono flex items-center gap-1">
+                  <AlertCircle className="size-3" />
+                  {errors.email}
+                </p>
+              )}
             </div>
-          </form>
-        </div>
+          </div>
+
+          {/* Social links */}
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="linkedin" className="text-xs font-mono text-[--text-secondary] uppercase flex items-center gap-2">
+                <Linkedin className="size-3.5 text-[hsl(var(--accent-500))]" />
+                LinkedIn Profile
+              </Label>
+              <Input 
+                id="linkedin"
+                name="linkedin"
+                value={formData.linkedin}
+                onChange={handleInputChange}
+                placeholder="linkedin.com/in/profile"
+                className={`bg-[--surface-secondary] border ${B} focus:border-[hsl(var(--accent-500))] rounded-none px-4 py-3 text-sm text-[--text-primary] placeholder:text-[--text-tertiary] h-11`}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="portfolio" className="text-xs font-mono text-[--text-secondary] uppercase flex items-center gap-2">
+                <Github className="size-3.5 text-[hsl(var(--accent-500))]" />
+                GitHub / Portfolio
+              </Label>
+              <Input 
+                id="portfolio"
+                name="portfolio"
+                value={formData.portfolio}
+                onChange={handleInputChange}
+                placeholder="github.com/profile"
+                className={`bg-[--surface-secondary] border ${B} focus:border-[hsl(var(--accent-500))] rounded-none px-4 py-3 text-sm text-[--text-primary] placeholder:text-[--text-tertiary] h-11`}
+              />
+            </div>
+          </div>
+
+          {/* Drag & Drop Upload Zone */}
+          <div className="space-y-2">
+            <Label className="text-xs font-mono text-[--text-secondary] uppercase flex items-center gap-2">
+              <FileText className="size-3.5 text-[hsl(var(--accent-500))]" />
+              Resume / CV *
+            </Label>
+            <div 
+              className={`border-2 border-dashed p-8 text-center transition-all ${
+                dragActive 
+                  ? 'border-[hsl(var(--accent-500))] bg-purple-500/10' 
+                  : errors.file
+                  ? 'border-red-500/50 bg-red-500/5'
+                  : `border-[hsl(0_0%_18%)] hover:border-[hsl(270_70%_60%/0.5)] bg-[--surface-secondary]`
+              }`}
+              onDragEnter={handleDrag}
+              onDragLeave={handleDrag}
+              onDragOver={handleDrag}
+              onDrop={handleDrop}
+            >
+              {selectedFile ? (
+                <div className="flex items-center justify-center gap-3 text-purple-300">
+                  <FileText className="size-6" />
+                  <div className="text-left">
+                    <p className="text-sm font-medium text-[--text-primary]">{selectedFile.name}</p>
+                    <p className="text-xs font-mono text-[--text-tertiary]">
+                      {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <Upload className="size-8 text-[--text-tertiary] mx-auto" />
+                  <div>
+                    <p className="text-sm font-medium text-[--text-primary]">Drop your resume file here</p>
+                    <p className="text-xs text-[--text-tertiary]">or click to select file</p>
+                  </div>
+                  <label htmlFor="resumeFile" className="inline-block">
+                    <span className={`px-4 py-2 border ${B} bg-[--surface-tertiary] text-xs font-mono text-[--text-secondary] hover:text-[--text-primary] transition-all cursor-pointer`}>
+                      CHOOSE FILE
+                    </span>
+                  </label>
+                  <input
+                    id="resumeFile"
+                    type="file"
+                    accept=".pdf,.doc,.docx"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                  <p className="text-xs font-mono text-[--text-tertiary]">PDF, DOC, or DOCX UP TO 10MB</p>
+                </div>
+              )}
+            </div>
+            {errors.file && (
+              <p className="text-red-400 text-xs font-mono flex items-center gap-1">
+                <AlertCircle className="size-3" />
+                {errors.file}
+              </p>
+            )}
+          </div>
+
+          {/* Message */}
+          <div className="space-y-2">
+            <Label htmlFor="message" className="text-xs font-mono text-[--text-secondary] uppercase">
+              Why PurpleRain? *
+            </Label>
+            <Textarea 
+              id="message"
+              name="message"
+              value={formData.message}
+              onChange={handleInputChange}
+              required 
+              rows={4}
+              placeholder="Tell us about your background and what excites you about building digital defense systems..."
+              className={`bg-[--surface-secondary] border ${B} focus:border-[hsl(var(--accent-500))] rounded-none p-4 text-sm text-[--text-primary] placeholder:text-[--text-tertiary] resize-none`}
+            />
+            {errors.message && (
+              <p className="text-red-400 text-xs font-mono flex items-center gap-1">
+                <AlertCircle className="size-3" />
+                {errors.message}
+              </p>
+            )}
+          </div>
+
+          {/* Submit CTA — Exact landing-v2 CTA button */}
+          <div className="pt-2 flex flex-col items-center gap-3">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full flex items-center justify-center gap-2 h-14 text-base font-medium transition-colors bg-[hsl(var(--accent-500))] text-[--text-on-accent-primary] hover:bg-[hsl(var(--accent-600))] cursor-pointer disabled:opacity-50"
+            >
+              {isSubmitting ? 'SUBMITTING...' : 'SUBMIT APPLICATION'}
+              <Send className="size-4" />
+            </button>
+            <p className="text-xs text-[--text-tertiary]">
+              We'll respond within 48 hours if there's a potential match
+            </p>
+          </div>
+        </form>
       </div>
-    </section>
+
+      <div className={`w-full border-b ${B}`} />
+    </SectionShell>
   );
 }
+

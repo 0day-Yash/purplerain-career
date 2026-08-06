@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Shield, Users, Globe, Target, Brain, Lock, Cpu, Network } from 'lucide-react';
+import { SectionShell } from './landing-primitives/section-shell';
+import { LandingHeading } from './landing-primitives/landing-heading';
+
+const B = "border-[hsl(0_0%_18%)]";
 
 const principles = [
   {
@@ -33,131 +35,99 @@ const stats = [
 ];
 
 export function LifeAtPurpleRain() {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        } else {
-          setIsVisible(false); // Reset visibility when out of view
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    const element = document.getElementById('life-section');
-    if (element) observer.observe(element);
-
-    return () => {
-      if (element) observer.unobserve(element);
-    };
-  }, []);
-
   return (
-    <section id="life-section" className="py-32 bg-background text-foreground overflow-hidden">
-      <div className="max-w-screen-xl mx-auto px-8">
-        <div className={`mb-20 ${isVisible ? 'animate-appear' : ''}`}>
-          <div className="max-w-4xl">
-            <h2 className="font-display text-5xl md:text-6xl mb-6 tracking-tight">
-              Life at <span className="gradient-text">PurpleRain</span>
-            </h2>
-            <p className="font-body text-lg text-muted-foreground leading-relaxed">
-              We're architecting the immune system for the digital world. 
-              This is where brilliant minds come to solve problems that matter.
-            </p>
-          </div>
-        </div>
+    <SectionShell container="full" id="life-section" className="gap-0 border-t border-b border-[hsl(0_0%_18%)] bg-[--surface-primary]">
+      {/* Top Monospace Bar */}
+      <div className={`w-full flex items-center justify-between px-6 py-3 border-b ${B}`}>
+        <span className="text-xs font-mono text-[--text-tertiary] uppercase tracking-widest">
+          CULTURE / VALUES
+        </span>
+        <span className="text-xs font-mono text-[hsl(var(--accent-500))]">
+          OUR MISSION
+        </span>
+      </div>
 
-        {/* Mission Statement */}
-        <div className={`mb-20 ${isVisible ? 'animate-appear delay-200' : ''}`}>
-          <div className="glass-2 rounded-xl p-8 border">
-            <h3 className="font-heading text-2xl mb-4">Our Mission</h3>
-            <p className="font-body text-lg text-muted-foreground leading-relaxed">
-              Every day, sophisticated attackers probe for weaknesses in critical systems. 
-              <span className="text-foreground font-semibold block mt-3">
-                We exist to make those attacks fail through superior engineering and uncompromising standards.
-              </span>
-            </p>
-          </div>
-        </div>
+      {/* Heading */}
+      <div className={`w-full px-6 py-12 border-b ${B} text-center`}>
+        <LandingHeading
+          tag="OUR CULTURE"
+          title="Life at PurpleRain"
+          subtitle="We're architecting the immune system for the digital world. This is where brilliant minds come to solve problems that matter."
+        />
+      </div>
 
-        {/* Principles Grid */}
-        <div className="mb-20">
-          <h3 className={`font-heading text-2xl mb-8 ${isVisible ? 'animate-appear delay-300' : ''}`}>
-            What Drives Us
-          </h3>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {principles.map((principle, index) => (
-              <Card 
-                key={index} 
-                className={`card-modern card-interactive group ${isVisible ? `animate-appear delay-${400 + index * 100}` : ''}`}
+      {/* Principles Grid — exact landing-v2 items grid with border dividers */}
+      <div className={`w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-b ${B}`}>
+        {principles.map((principle, index) => {
+          const Icon = principle.icon;
+          return (
+            <article
+              key={index}
+              className={`relative flex flex-col gap-5 p-7 min-h-[220px] overflow-hidden border-b sm:border-b-0 border-r last:border-r-0 ${B} hover:bg-[--surface-secondary] transition-colors duration-200`}
+            >
+              {/* Corner glow */}
+              <div
+                className="pointer-events-none absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-32 h-32 rounded-full blur-[50px]"
+                style={{ background: "hsl(270 70% 60% / 0.2)" }}
+              />
+
+              <figure
+                className={`relative z-10 flex size-9 items-center justify-center border ${B} text-[hsl(270_70%_75%)]`}
+                style={{ background: "hsl(270 70% 60% / 0.08)" }}
               >
-                <CardContent className="p-6">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 border border-border flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <principle.icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <h4 className="font-heading text-lg mb-3">{principle.title}</h4>
-                  <p className="font-body text-muted-foreground leading-relaxed text-sm">{principle.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
+                <Icon className="size-4" />
+              </figure>
 
-        {/* How We Work & Stats */}
-        <div className="grid md:grid-cols-3 gap-12 items-start">
-          <div className={`md:col-span-2 ${isVisible ? 'animate-appear delay-500' : ''}`}>
-            <h3 className="font-heading text-2xl mb-6">How We Work</h3>
-            <div className="grid sm:grid-cols-2 gap-6">
-              <div>
-                <h4 className="font-heading text-base mb-2">Remote-First Culture</h4>
-                <p className="font-body text-muted-foreground leading-relaxed text-sm">
-                  Access global talent with flexibility to do your best work from anywhere.
-                </p>
+              <div className="relative z-10 flex flex-col gap-2">
+                <h3 className="text-base font-medium text-[--text-primary]">{principle.title}</h3>
+                <p className="text-sm text-[--text-tertiary] leading-relaxed">{principle.description}</p>
               </div>
-              <div>
-                <h4 className="font-heading text-base mb-2">Deep Work Focus</h4>
-                <p className="font-body text-muted-foreground leading-relaxed text-sm">
-                  Minimize meetings, eliminate busywork, maximize time for complex problem-solving.
-                </p>
-              </div>
-              <div>
-                <h4 className="font-heading text-base mb-2">Learn from Experts</h4>
-                <p className="font-body text-muted-foreground leading-relaxed text-sm">
-                  Work alongside former NSA researchers and security architects from Fortune 500s.
-                </p>
-              </div>
-              <div>
-                <h4 className="font-heading text-base mb-2">Rapid Evolution</h4>
-                <p className="font-body text-muted-foreground leading-relaxed text-sm">
-                  Move fast, learn faster, and adapt to emerging threats in real-time.
-                </p>
-              </div>
-            </div>
-          </div>
-          
-          <div className={`space-y-4 ${isVisible ? 'animate-appear delay-700' : ''}`}>
-            {stats.map((stat, index) => (
-              <div 
-                key={index}
-                className="glass-1 rounded-xl p-6 border group hover:border-primary/30 transition-all duration-300"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 border border-border flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <stat.icon className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <div className="font-display text-2xl text-primary mb-1">{stat.metric}</div>
-                    <p className="font-body text-muted-foreground text-xs">{stat.label}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+            </article>
+          );
+        })}
+      </div>
+
+      {/* Mission Callout Strip */}
+      <div className={`w-full px-6 py-10 border-b ${B} bg-[--surface-secondary]/30 text-center`}>
+        <div className="max-w-3xl mx-auto space-y-2">
+          <span className="text-xs font-mono text-[hsl(var(--accent-500))] uppercase tracking-widest">
+            CORE PURPOSE
+          </span>
+          <p className="text-base md:text-lg text-[--text-secondary] leading-relaxed">
+            Every day, sophisticated attackers probe for weaknesses in critical systems.{' '}
+            <strong className="text-[--text-primary] font-medium">
+              We exist to make those attacks fail through superior engineering and uncompromising standards.
+            </strong>
+          </p>
         </div>
       </div>
-    </section>
+
+      {/* Stats Bar */}
+      <div className="w-full grid grid-cols-2 md:grid-cols-4">
+        {stats.map((stat, index) => {
+          const Icon = stat.icon;
+          return (
+            <div
+              key={index}
+              className={`p-6 border-r last:border-r-0 ${B} flex items-center gap-4 hover:bg-[--surface-secondary] transition-colors`}
+            >
+              <figure
+                className={`flex size-9 items-center justify-center border ${B} text-[hsl(270_70%_75%)] shrink-0`}
+                style={{ background: "hsl(270 70% 60% / 0.08)" }}
+              >
+                <Icon className="size-4" />
+              </figure>
+              <div>
+                <div className="text-xl font-medium text-[--text-primary]">{stat.metric}</div>
+                <p className="text-xs text-[--text-tertiary]">{stat.label}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className={`w-full border-b ${B}`} />
+    </SectionShell>
   );
 }
+

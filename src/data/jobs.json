@@ -43,6 +43,7 @@
       "type": "Full-Time",
       "location": "Remote (APAC Region)",
       "salary": "$120k - $160k",
+      "status": "Open",
       "description": "Lead marketing strategy and execution for the Asia-Pacific region. Build brand awareness and drive growth in key Asian markets.",
       "fullDescription": "We're seeking an experienced Chief Marketing Officer to lead our expansion in the Asia-Pacific region. This role requires deep understanding of Asian markets, cultural nuances, and business practices. You'll be responsible for developing and executing regional marketing strategy, building partnerships, and establishing PurpleRain as a leading cybersecurity brand across APAC markets including India, Singapore, Japan, South Korea, and Southeast Asia.",
       "requirements": [
@@ -96,8 +97,9 @@
       "department": "Marketing",
       "type": "Cofounder",
       "location": "Remote",
+      "status": "Open",
       "description": "Creative, chronically-online, internet-culture-aware CMO to help shape the public identity of an early-stage cybersecurity startup focused on SMB protection. This is a revenue sharing and equity-only role for now.",
-      "fullDescription": "PurpleRain Tech is looking for a creative, chronically-online, internet-culture-aware CMO to help shape the public identity of an early-stage cybersecurity startup focused on SMB protection.\n\nThis is not a traditional corporate role. We want someone who understands branding, aesthetics, social media psychology, trends, short-form content, and how to make a cybersecurity company actually feel human online.\n\nAbout PurpleRain Tech:\nPurpleRain builds cybersecurity infrastructure and monitoring solutions for small and medium businesses using affordable hardware, real-time alerts, and centralized dashboards. We focus on making enterprise-grade cybersecurity accessible to smaller companies without enterprise-level pricing.\n\nSmall team. Fast-moving. Mildly sleep-deprived. The usual startup tax.",
+      "fullDescription": "PurpleRain Tech is looking for a creative, chronically-online, internet-culture-aware CMO to help shape the public identity of an early-stage cybersecurity startup focused on SMB protection.\n\nThis is not a traditional corporate role. We want someone who understands branding, aesthetics, social media psychology, trends, short-form content, and how to make a cybersecurity company actually feel human online.\n\nAbout PurpleRain Tech:\nPurpleRain builds cybersecurity infrastructure and monitoring solutions for small and medium businesses using affordable hardware, real-time alerts, and centralized dashboards. We focus on making enterprise-grade cybersecurity accessible to smaller companies without enterprise-level pricing.",
       "requirements": [
         "Strong taste in design, fashion, music, internet culture, or aesthetics",
         "Comfortable on camera or directing content",
@@ -120,6 +122,115 @@
         "Significant creative freedom and direct influence over company direction"
       ],
       "interviewLink": "https://cal.com/0day-yash/interview"
+    },
+    {
+      "id": "senior-rust-engineer",
+      "title": "Senior Systems Engineer (Rust & eBPF)",
+      "department": "Engineering",
+      "type": "Full-Time",
+      "location": "Remote",
+      "salary": "$140k - $180k",
+      "status": "Closed",
+      "description": "Architect high-throughput network packet capture engines and kernel telemetry sensors using Rust and eBPF.",
+      "fullDescription": "We are seeking a Senior Systems Engineer to own our core agent telemetry engine built in Rust and eBPF. You will design ultra-low-latency network inspection pipelines capable of processing millions of events per second with near-zero CPU overhead on edge gateways.",
+      "requirements": [
+        "5+ years writing production Rust systems code",
+        "Deep experience with eBPF, Linux kernel networking, and XDP",
+        "Proficiency with Async Rust (Tokio, async-std)",
+        "Strong understanding of TCP/IP, UDP, TLS, and deep packet inspection"
+      ],
+      "responsibilities": [
+        "Architect low-overhead Linux kernel sensors using eBPF & CO-RE",
+        "Optimize memory management and zero-copy packet parsers",
+        "Build secure inter-process communication mechanisms for localized security agents"
+      ],
+      "benefits": [
+        "Competitive salary & high equity allocation",
+        "Top-tier hardware setup (M3 Max / Threadripper)",
+        "Unlimited PTO and remote workspace stipend"
+      ],
+      "interviewLink": ""
+    },
+    {
+      "id": "security-researcher-ai",
+      "title": "AI Safety & LLM Red Teamer",
+      "department": "Research",
+      "type": "Full-Time",
+      "location": "Remote",
+      "salary": "$130k - $165k",
+      "status": "Closed",
+      "description": "Conduct adversarial research against autonomous agent frameworks, prompt injections, and neural network supply chains.",
+      "fullDescription": "As an AI Safety & LLM Red Teamer, you will explore emerging attack surfaces on autonomous AI agents, multi-agent frameworks, and vector databases. You will develop automated jailbreak, indirect prompt injection, and model inversion techniques.",
+      "requirements": [
+        "Proven research background in AI security, prompt injection, or model poisoning",
+        "Fluency in Python, PyTorch/TensorFlow, and agentic SDKs (LangChain, AutoGen)",
+        "Published CVEs or research papers in machine learning security"
+      ],
+      "responsibilities": [
+        "Discover and exploit novel vulnerabilities in enterprise AI deployments",
+        "Publish threat intelligence papers and novel attack vectors",
+        "Collaborate with engineering to build AI guardrail validation tools"
+      ],
+      "benefits": [
+        "Generous compute budget & GPU cluster access",
+        "Conference travel & research publishing sponsorship",
+        "Fully remote work flexibility"
+      ],
+      "interviewLink": ""
+    },
+    {
+      "id": "staff-infra-engineer",
+      "title": "Staff Cloud Infrastructure Engineer",
+      "department": "Engineering",
+      "type": "Full-Time",
+      "location": "Remote",
+      "salary": "$150k - $190k",
+      "status": "Closed",
+      "description": "Lead multi-region Kubernetes deployments, zero-trust network topology, and distributed telemetry backbones.",
+      "fullDescription": "Our global edge network relies on bulletproof infrastructure. In this role, you will design and operate globally distributed Kubernetes clusters, ClickHouse analytics pools, and WireGuard mesh overlays that power enterprise network security.",
+      "requirements": [
+        "7+ years operating mission-critical cloud infrastructure at scale",
+        "Expertise in Terraform, Kubernetes, Helm, and Cilium networking",
+        "Experience with ClickHouse, Kafka, or high-throughput telemetry streams"
+      ],
+      "responsibilities": [
+        "Design zero-downtime multi-cloud deployment pipelines",
+        "Maintain 99.99% system availability SLA",
+        "Enforce strict Zero Trust architecture across all cloud resources"
+      ],
+      "benefits": [
+        "Competitive executive-level base + equity",
+        "100% health & dental coverage",
+        "Annual learning & conference budget"
+      ],
+      "interviewLink": ""
+    },
+    {
+      "id": "product-designer-lead",
+      "title": "Lead Product & Systems Designer",
+      "department": "Marketing",
+      "type": "Full-Time",
+      "location": "Remote",
+      "salary": "$110k - $145k",
+      "status": "Closed",
+      "description": "Craft high-density dashboard interfaces, dark-mode design systems, and intuitive threat visualization tools.",
+      "fullDescription": "We are looking for a visionary Lead Product Designer to own the end-to-end visual identity and user interface of PurpleRain's enterprise security console. You will transform complex network graph data into elegant, dark-mode interfaces.",
+      "requirements": [
+        "5+ years designing enterprise SaaS, developer tools, or security dashboards",
+        "Mastery of Figma, design token systems, and CSS animation primitives",
+        "Strong portfolio showcasing complex data density and dark theme mastery"
+      ],
+      "responsibilities": [
+        "Design real-time threat graph visualizers and incident response flows",
+        "Maintain and expand the PurpleRain UI token system",
+        "Work closely with frontend engineers to ensure pixel-perfect implementation"
+      ],
+      "benefits": [
+        "Flexible remote-first schedule",
+        "Stipend for home studio & OLED monitors",
+        "Equity options in fast-growing security startup"
+      ],
+      "interviewLink": ""
     }
   ]
 }

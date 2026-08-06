@@ -9,7 +9,7 @@ import { SiteNavbar } from '@/components/site-navbar';
 
 export function Home() {
   return (
-    <div className="min-h-screen bg-background w-full">
+    <div className="min-h-screen bg-[--surface-primary] text-[--text-primary] w-full">
       <SiteNavbar />
       <HeroSection />
       <OpenRoles />
@@ -21,3 +21,4 @@ export function Home() {
     </div>
   );
 }
+

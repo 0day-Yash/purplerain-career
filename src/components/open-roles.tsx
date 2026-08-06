@@ -1,8 +1,4 @@
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useState } from 'react';
 import { MapPin, Clock, ChevronDown, ChevronUp, ArrowUpRight, DollarSign, Code, Brain, Briefcase, Info } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
@@ -13,7 +9,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { SectionShell } from './landing-primitives/section-shell';
+import { LandingHeading } from './landing-primitives/landing-heading';
 import jobsData from '@/data/jobs.json';
+
+const B = "border-[hsl(0_0%_18%)]";
 
 const iconMap: Record<string, any> = {
   Security: Code,
@@ -22,30 +22,18 @@ const iconMap: Record<string, any> = {
   Research: Brain,
 };
 
+const filterCategories = [
+  { id: 'all', label: 'ALL ROLES' },
+  { id: 'Full-Time', label: 'FULL-TIME' },
+  { id: 'Internship', label: 'INTERNSHIPS' },
+  { id: 'Engineering', label: 'ENGINEERING' },
+  { id: 'Security', label: 'SECURITY' },
+  { id: 'Research', label: 'RESEARCH' },
+];
+
 export function OpenRoles() {
   const [filter, setFilter] = useState<string>('all');
   const [expandedRoles, setExpandedRoles] = useState<Set<string>>(new Set());
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        } else {
-          setIsVisible(false);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    const element = document.getElementById('open-roles');
-    if (element) observer.observe(element);
-
-    return () => {
-      if (element) observer.unobserve(element);
-    };
-  }, []);
 
   const filteredRoles = jobsData.jobs.filter(role =>
     filter === 'all' || role.type === filter || role.department === filter
@@ -62,201 +50,218 @@ export function OpenRoles() {
   };
 
   return (
-    <section id="open-roles" className="py-32 bg-background text-foreground overflow-hidden">
-      <div className="max-w-screen-xl mx-auto px-8">
-        <div className={`mb-20 ${isVisible ? 'animate-fade-in' : ''}`}>
-          <div className="max-w-4xl">
-            <h2 className="font-display text-6xl md:text-7xl mb-8 tracking-tight">
-              Open <span className="bg-gradient-to-r from-pr-primary via-purple-300 to-blue-400 bg-clip-text text-transparent">Positions</span>
-            </h2>
-            <p className="font-body text-xl text-muted-foreground leading-relaxed">
-              We're looking for exceptional people who want to build the future of cybersecurity.
-              Every role is an opportunity to make a real impact.
-            </p>
-          </div>
-        </div>
+    <SectionShell container="full" id="open-roles" className="gap-0 border-t border-b border-[hsl(0_0%_18%)] bg-[--surface-primary]">
+      {/* Top Monospace Bar */}
+      <div className={`w-full flex items-center justify-between px-6 py-3 border-b ${B}`}>
+        <span className="text-xs font-mono text-[--text-tertiary] uppercase tracking-widest">
+          POSITIONS / OPPORTUNITIES
+        </span>
+        <span className="text-xs font-mono text-[hsl(var(--accent-500))]">
+          {filteredRoles.length} ACTIVE POSITIONS
+        </span>
+      </div>
 
-        {/* Filter */}
-        <div className={`mb-16 ${isVisible ? 'animate-slide-in-up' : ''}`}>
-          <Select value={filter} onValueChange={setFilter}>
-            <SelectTrigger className="w-64 premium-input text-foreground rounded-lg h-12 font-medium hover:bg-muted/50 transition-all duration-300">
-              <SelectValue placeholder="Filter by category" />
-            </SelectTrigger>
-            <SelectContent className="bg-card border-border rounded-lg backdrop-blur-md text-foreground">
-              <SelectItem value="all">All Positions</SelectItem>
-              <SelectItem value="Full-Time">Full-Time</SelectItem>
-              <SelectItem value="Internship">Internships</SelectItem>
-              <SelectItem value="Engineering">Engineering</SelectItem>
-              <SelectItem value="Security">Security</SelectItem>
-              <SelectItem value="Research">Research</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+      {/* Heading */}
+      <div className={`w-full px-6 py-12 border-b ${B} text-center`}>
+        <LandingHeading
+          tag="JOIN OUR TEAM"
+          title="Open Positions"
+          subtitle="We're looking for exceptional engineers, researchers, and security specialists to build the future of digital defense."
+        />
+      </div>
 
-        {/* Roles List */}
-        <div className="space-y-6">
-          {filteredRoles.map((role, index) => {
-            const delay = 300 + index * 100;
-            const cardClassName = `premium-card ${isVisible ? `animate-slide-in-up` : ''}`;
+      {/* Filter Tabs Bar */}
+      <div className={`w-full flex flex-wrap items-center justify-center border-b ${B} bg-[--surface-primary]`}>
+        {filterCategories.map((cat) => (
+          <button
+            key={cat.id}
+            onClick={() => setFilter(cat.id)}
+            className={`h-11 px-5 text-xs font-mono tracking-wider uppercase transition-colors cursor-pointer border-r last:border-r-0 ${B} ${
+              filter === cat.id
+                ? 'bg-[hsl(var(--accent-500))] text-[--text-on-accent-primary]'
+                : 'text-[--text-secondary] hover:bg-[--surface-secondary] hover:text-[--text-primary]'
+            }`}
+          >
+            {cat.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Roles Grid */}
+      <div className="w-full max-w-6xl mx-auto p-6 md:p-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {filteredRoles.map((role) => {
+            const isExpanded = expandedRoles.has(role.id);
             const RoleIcon = iconMap[role.department] || Code;
 
             return (
-              <Card
+              <article
                 key={role.id}
-                className={cardClassName}
-                style={{ animationDelay: `${delay}ms` }}
+                className={`relative flex flex-col justify-between overflow-hidden border ${B} bg-[--surface-primary] hover:bg-[--surface-secondary] transition-colors duration-200`}
               >
-                <CardHeader className="pb-6">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="w-12 h-12 rounded-lg bg-pr-primary/10 border border-border flex items-center justify-center">
-                          <RoleIcon className="w-6 h-6 text-pr-primary" />
-                        </div>
-                        <div>
-                          <CardTitle className="font-heading text-2xl mb-2">{role.title}</CardTitle>
-                          <div className="flex flex-wrap items-center gap-4 font-body text-sm">
-                            <Badge variant="outline" className="border-border text-muted-foreground rounded-md px-3 py-1 font-medium">
-                              {role.department}
-                            </Badge>
-                            <div className="flex items-center text-muted-foreground font-medium">
-                              <Clock className="w-4 h-4 mr-1" />
-                              {role.type}
-                            </div>
-                            <div className="flex items-center text-muted-foreground font-medium">
-                              <MapPin className="w-4 h-4 mr-1" />
-                              {role.location}
-                            </div>
-                            {role.salary && (
-                              <div className="flex items-center text-pr-primary font-semibold">
-                                <DollarSign className="w-4 h-4 mr-1" />
-                                {role.salary}
-                              </div>
-                            )}
-                            {role.status === 'Closed' && (
-                              <Badge variant="destructive" className="bg-red-500/10 text-red-500 border-red-500/20 rounded-md px-3 py-1 font-semibold">
-                                Closed
-                              </Badge>
-                            )}
-                          </div>
-                        </div>
-                      </div>
+                {/* Corner Glow */}
+                <div
+                  className="pointer-events-none absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-40 h-40 rounded-full blur-[60px]"
+                  style={{ background: 'hsl(270 70% 60% / 0.15)' }}
+                />
+
+                {/* Top Role Header */}
+                <div className={`p-6 border-b ${B} space-y-4`}>
+                  <div className="flex items-center justify-between">
+                    <figure
+                      className={`flex size-10 items-center justify-center border ${B} text-[hsl(270_70%_75%)]`}
+                      style={{ background: 'hsl(270 70% 60% / 0.08)' }}
+                    >
+                      <RoleIcon className="size-5" />
+                    </figure>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-mono text-[--text-tertiary] uppercase tracking-widest">
+                        {role.department}
+                      </span>
+                      {(role.status === 'Closed' || role.status === 'Filled') && (
+                        <span className="text-[10px] font-mono text-amber-400 border border-amber-500/30 px-1.5 py-0.5 uppercase">
+                          {role.status === 'Filled' ? 'FILLED' : 'CLOSED'}
+                        </span>
+                      )}
                     </div>
                   </div>
 
-                  <CardDescription className="font-body text-muted-foreground text-lg leading-relaxed">
-                    {role.description}
-                  </CardDescription>
-                </CardHeader>
+                  <div>
+                    <h3 className="text-xl font-medium text-[--text-primary] mb-2">{role.title}</h3>
+                    <p className="text-xs md:text-sm text-[--text-tertiary] leading-relaxed line-clamp-3">
+                      {role.description}
+                    </p>
+                  </div>
 
-                <CardContent className="pt-0">
-                  <Collapsible>
-                    <div className="flex justify-between items-center flex-wrap gap-4">
-                      <CollapsibleTrigger
-                        onClick={() => toggleRole(role.id)}
-                        className="flex items-center text-pr-primary hover:text-pr-primary/90 transition-colors font-medium font-body"
-                      >
-                        {expandedRoles.has(role.id) ? 'Show Less' : 'View Details'}
-                        {expandedRoles.has(role.id) ? (
-                          <ChevronUp className="ml-2 w-4 h-4 transition-transform duration-300" />
-                        ) : (
-                          <ChevronDown className="ml-2 w-4 h-4 transition-transform duration-300" />
-                        )}
-                      </CollapsibleTrigger>
+                  {/* Metadata Row */}
+                  <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-[--text-tertiary] pt-2">
+                    <span className="flex items-center gap-1">
+                      <Clock className="size-3.5" />
+                      {role.type}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <MapPin className="size-3.5" />
+                      {role.location}
+                    </span>
+                    {role.salary && (
+                      <span className="flex items-center gap-1 text-[hsl(var(--accent-500))] font-semibold">
+                        <DollarSign className="size-3.5" />
+                        {role.salary}
+                      </span>
+                    )}
+                  </div>
+                </div>
 
-                      <div className="flex gap-3">
-                        <Button 
-                          variant="outline"
-                          className="border-border text-foreground hover:bg-muted/50 font-medium font-body"
-                          onClick={() => window.location.href = `/jobs/${role.id}`}
-                        >
-                          Full Details
-                        </Button>
-                        {role.status === 'Closed' ? (
-                          <Button 
-                            disabled
-                            className="bg-muted text-muted-foreground/60 border border-border font-semibold px-8 py-3 rounded-lg cursor-not-allowed"
-                          >
-                            Applications Closed
-                          </Button>
-                        ) : (
-                          <Dialog>
-                            <DialogTrigger asChild>
-                              <Button 
-                                className="bg-white text-black font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] group"
-                              >
-                                Apply Now
-                                <ArrowUpRight className="ml-2 w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
-                              </Button>
-                            </DialogTrigger>
-                            <DialogContent className="bg-card border-border max-w-lg">
-                              <DialogHeader>
-                                <DialogTitle className="text-xl font-heading">Application Instructions</DialogTitle>
-                                <DialogDescription className="text-muted-foreground">
-                                  Please follow these steps before scheduling your interview
-                                </DialogDescription>
-                              </DialogHeader>
-                              <div className="space-y-4 py-4">
-                                <div className="p-4 bg-muted/30 rounded-lg border border-border">
-                                  <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
-                                    <Info className="w-4 h-4 text-pr-primary" />
-                                    Before Scheduling:
-                                  </h4>
-                                  <ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside">
-                                    <li>Upload your resume and portfolio to <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" className="text-pr-primary hover:underline font-medium">Google Drive</a></li>
-                                    <li>Make the folder/files publicly accessible</li>
-                                    <li>Copy the share link</li>
-                                    <li>Position: <span className="font-semibold text-foreground">{role.title}</span></li>
-                                    <li>Include the Google Drive link in your meeting notes</li>
-                                  </ol>
-                                </div>
-                                <Button 
-                                  className="w-full bg-white text-black font-semibold py-3 rounded-lg transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
-                                  onClick={() => window.open(role.interviewLink, '_blank')}
-                                >
-                                  Continue to Schedule Interview
-                                  <ArrowUpRight className="ml-2 w-4 h-4" />
-                                </Button>
-                              </div>
-                            </DialogContent>
-                          </Dialog>
-                        )}
-                      </div>
+                {/* Quick Details Collapsible */}
+                <Collapsible open={isExpanded} onOpenChange={() => toggleRole(role.id)}>
+                  <div className={`px-6 py-3 border-b ${B} flex items-center justify-between`}>
+                    <CollapsibleTrigger asChild>
+                      <button className="flex items-center gap-1 text-xs font-mono text-[hsl(var(--accent-500))] hover:underline cursor-pointer">
+                        {isExpanded ? 'LESS DETAILS' : 'VIEW DETAILS'}
+                        {isExpanded ? <ChevronUp className="size-3.5" /> : <ChevronDown className="size-3.5" />}
+                      </button>
+                    </CollapsibleTrigger>
+                    <a
+                      href={`/jobs/${role.id}`}
+                      className="text-xs font-mono text-[--text-tertiary] hover:text-[--text-primary] transition-colors"
+                    >
+                      FULL PAGE →
+                    </a>
+                  </div>
+
+                  <CollapsibleContent className={`p-6 border-b ${B} bg-[--surface-secondary]/40 space-y-4`}>
+                    <div>
+                      <h4 className="text-xs font-mono text-[--text-secondary] uppercase mb-1">About the Role</h4>
+                      <p className="text-xs text-[--text-tertiary] leading-relaxed">{role.fullDescription}</p>
                     </div>
+                    <div>
+                      <h4 className="text-xs font-mono text-[--text-secondary] uppercase mb-1">Requirements</h4>
+                      <ul className="space-y-1.5 text-xs text-[--text-tertiary]">
+                        {role.requirements.map((req, i) => (
+                          <li key={i} className="flex items-start gap-2">
+                            <span className="text-[hsl(var(--accent-500))] font-bold">•</span>
+                            <span>{req}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
 
-                    <CollapsibleContent className="mt-8 pt-8 border-t border-border">
-                      <div className="grid md:grid-cols-2 gap-8">
-                        <div>
-                          <h4 className="font-heading mb-4 text-lg">About This Role</h4>
-                          <p className="font-body text-muted-foreground leading-relaxed">{role.fullDescription}</p>
-                        </div>
+                {/* Card Footer CTA Button — Exact Landing Page Button */}
+                <div>
+                  {(role.status === 'Closed' || role.status === 'Filled') ? (
+                    <div className="flex items-center justify-center h-12 text-xs font-mono uppercase text-[--text-tertiary] bg-[--surface-secondary] cursor-not-allowed border-t border-[hsl(0_0%_18%)]">
+                      {role.status === 'Filled' ? 'POSITION FILLED' : 'APPLICATIONS CLOSED'}
+                    </div>
+                  ) : (
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <button className="w-full flex items-center justify-center gap-2 h-12 text-sm font-medium transition-colors bg-[hsl(var(--accent-500))] text-[--text-on-accent-primary] hover:bg-[hsl(var(--accent-600))] cursor-pointer">
+                          Apply Position
+                          <ArrowUpRight className="size-4" />
+                        </button>
+                      </DialogTrigger>
+                      <DialogContent className={`bg-[--surface-primary] border ${B} text-[--text-primary] max-w-lg p-6 rounded-none`}>
+                        <DialogHeader>
+                          <DialogTitle className="text-xl font-medium text-[--text-primary]">
+                            Application Instructions
+                          </DialogTitle>
+                          <DialogDescription className="text-[--text-tertiary]">
+                            Follow these steps before scheduling your interview for {role.title}.
+                          </DialogDescription>
+                        </DialogHeader>
 
-                        <div>
-                          <h4 className="font-heading mb-4 text-lg">What We're Looking For</h4>
-                          <ul className="space-y-3">
-                            {role.requirements.map((req, index) => (
-                              <li key={index} className="font-body text-muted-foreground flex items-start">
-                                <span className="text-pr-primary mr-3 mt-1 font-bold">•</span>
-                                {req}
+                        <div className="space-y-4 py-3">
+                          <div className={`p-4 bg-[--surface-secondary] border ${B} space-y-3`}>
+                            <h4 className="font-mono text-xs text-[--text-primary] flex items-center gap-2 uppercase">
+                              <Info className="size-4 text-[hsl(var(--accent-500))]" />
+                              Before Scheduling:
+                            </h4>
+                            <ol className="text-xs md:text-sm text-[--text-secondary] space-y-2 list-decimal list-inside leading-relaxed">
+                              <li>
+                                Upload resume & documents to{' '}
+                                <a
+                                  href="https://drive.google.com"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-[hsl(var(--accent-500))] hover:underline font-mono"
+                                >
+                                  Google Drive
+                                </a>
                               </li>
-                            ))}
-                          </ul>
+                              <li>Set folder permissions to public link access</li>
+                              <li>Copy the share link</li>
+                              <li>Include the share link in your interview booking notes</li>
+                            </ol>
+                          </div>
+
+                          <button
+                            onClick={() => window.open(role.interviewLink, '_blank')}
+                            className="w-full flex items-center justify-center gap-2 h-12 text-sm font-medium transition-colors bg-[hsl(var(--accent-500))] text-[--text-on-accent-primary] hover:bg-[hsl(var(--accent-600))] cursor-pointer"
+                          >
+                            Continue to Schedule Interview
+                            <ArrowUpRight className="size-4" />
+                          </button>
                         </div>
-                      </div>
-                    </CollapsibleContent>
-                  </Collapsible>
-                </CardContent>
-              </Card>
+                      </DialogContent>
+                    </Dialog>
+                  )}
+                </div>
+              </article>
             );
           })}
         </div>
 
         {filteredRoles.length === 0 && (
-          <div className="text-center py-20">
-            <p className="font-body text-muted-foreground text-xl">No positions found matching your criteria.</p>
+          <div className={`text-center py-16 border ${B} bg-[--surface-secondary]`}>
+            <p className="text-[--text-tertiary] text-sm font-mono">NO POSITIONS FOUND FOR THIS FILTER.</p>
           </div>
         )}
       </div>
-    </section>
+
+      <div className={`w-full border-b ${B}`} />
+    </SectionShell>
   );
 }
+

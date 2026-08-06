@@ -1,128 +1,131 @@
-import { useState, useEffect } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Home, Laptop, Clock, BookOpen, Coffee, Shield, Zap } from 'lucide-react';
+import { SectionShell } from './landing-primitives/section-shell';
+import { LandingHeading } from './landing-primitives/landing-heading';
 
-  const benefits = [
+const B = "border-[hsl(0_0%_18%)]";
+
+const benefits = [
   {
     icon: Home,
     title: 'Remote-First',
-    description: 'Work from anywhere with reliable internet. Your best work environment is wherever you choose.',
-    color: 'text-pr-primary'
+    description: 'Work from anywhere with reliable internet. Your best work environment is wherever you choose.'
   },
   {
     icon: Laptop,
     title: 'Premium Equipment',
-    description: 'Latest MacBook Pro, multiple monitors, and any hardware you need to be productive.',
-    color: 'text-pr-primary'
+    description: 'Latest MacBook Pro, multiple monitors, and hardware of your choice to maximize productivity.'
   },
   {
     icon: Clock,
     title: 'Flexible Schedule',
-    description: 'Results matter, not hours. Work when you most productive and creative.',
-    color: 'text-pr-primary'
+    description: 'Results matter, not clocking hours. Work when you are most productive and creative.'
   },
   {
     icon: BookOpen,
     title: 'Continuous Learning',
-    description: 'Annual learning budget for courses, conferences, certifications, and research.',
-    color: 'text-pr-primary'
+    description: 'Annual learning budget for courses, conferences, certifications, and research.'
   }
 ];
 
 const additionalBenefits = [
-  { icon: Coffee, metric: '4 weeks', label: 'Paid vacation minimum', color: 'text-pr-primary' },
-  { icon: BookOpen, metric: '$3,000', label: 'Annual learning budget', color: 'text-pr-primary' },
-  { icon: Shield, metric: '100%', label: 'Health premium coverage', color: 'text-pr-primary' },
-  { icon: Zap, metric: 'Equity', label: 'Meaningful ownership', color: 'text-pr-primary' }
+  { icon: Coffee, metric: '4 WEEKS', label: 'Paid vacation minimum' },
+  { icon: BookOpen, metric: '$3,000', label: 'Annual learning budget' },
+  { icon: Shield, metric: '100%', label: 'Health premium coverage' },
+  { icon: Zap, metric: 'EQUITY', label: 'Meaningful ownership' }
 ];
 
 export function PerksAndBenefits() {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        } else {
-          setIsVisible(false); // Reset visibility when out of view
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    const element = document.getElementById('perks-section');
-    if (element) observer.observe(element);
-
-    return () => {
-      if (element) observer.unobserve(element);
-    };
-  }, []);
-
   return (
-    <section id="perks-section" className="py-32 bg-background text-foreground overflow-hidden">
-      <div className="max-w-screen-xl mx-auto px-8">
-        <div className={`mb-20 ${isVisible ? 'animate-fade-in' : ''}`}>
-          <div className="max-w-4xl">
-            <h2 className="font-display text-6xl md:text-7xl mb-8 tracking-tight">
-              Benefits & <span className="bg-gradient-to-r from-pr-primary via-purple-300 to-blue-400 bg-clip-text text-transparent">Compensation</span>
-            </h2>
-            <p className="font-body text-xl text-muted-foreground leading-relaxed">
-              We believe exceptional work deserves exceptional support. Here's what you get when you join our mission.
-            </p>
-          </div>
-        </div>
+    <SectionShell container="full" id="perks-section" className="gap-0 border-t border-b border-[hsl(0_0%_18%)] bg-[--surface-primary]">
+      {/* Top Monospace Bar */}
+      <div className={`w-full flex items-center justify-between px-6 py-3 border-b ${B}`}>
+        <span className="text-xs font-mono text-[--text-tertiary] uppercase tracking-widest">
+          BENEFITS / COMPENSATION
+        </span>
+        <span className="text-xs font-mono text-[hsl(var(--accent-500))]">
+          WHAT YOU GET
+        </span>
+      </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-          {benefits.map((benefit, index) => (
-            <Card 
+      {/* Heading */}
+      <div className={`w-full px-6 py-12 border-b ${B} text-center`}>
+        <LandingHeading
+          tag="WHY JOIN US"
+          title="Benefits & Compensation"
+          subtitle="We believe exceptional work deserves exceptional support. Here's what you get when you join our mission."
+        />
+      </div>
+
+      {/* 4 Benefit Cards Grid */}
+      <div className={`w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-b ${B}`}>
+        {benefits.map((benefit, index) => {
+          const Icon = benefit.icon;
+          return (
+            <article
               key={index}
-              className={`premium-card hover-lift group ${isVisible ? `animate-slide-in-up` : ''}`}
-              style={{ animationDelay: `${200 + index * 100}ms` }}
+              className={`relative flex flex-col gap-5 p-7 min-h-[220px] overflow-hidden border-b sm:border-b-0 border-r last:border-r-0 ${B} hover:bg-[--surface-secondary] transition-colors duration-200`}
             >
-              <CardContent className="p-8">
-                <div className="mb-6">
-                  <div className="w-14 h-14 rounded-xl bg-muted/50 border border-border flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-300 group-hover:border-pr-primary">
-                    <benefit.icon className={`w-7 h-7 ${benefit.color} group-hover:scale-110 transition-transform duration-300`} />
-                  </div>
-                </div>
-                <h3 className="font-heading text-lg mb-3">{benefit.title}</h3>
-                <p className="font-body text-muted-foreground leading-relaxed text-sm">{benefit.description}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+              {/* Corner glow */}
+              <div
+                className="pointer-events-none absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-32 h-32 rounded-full blur-[50px]"
+                style={{ background: "hsl(270 70% 60% / 0.2)" }}
+              />
 
-        {/* Additional Benefits */}
-        <div className={`glass rounded-xl p-12 ${isVisible ? 'animate-scale-in' : ''}`} style={{ animationDelay: '500ms' }}>
-          <h3 className="font-heading text-3xl mb-8 text-center">The Numbers</h3>
-          <div className="grid md:grid-cols-4 gap-8">
-            {additionalBenefits.map((item, index) => (
-              <div 
-                key={index} 
-                className="text-center group"
+              <figure
+                className={`relative z-10 flex size-9 items-center justify-center border ${B} text-[hsl(270_70%_75%)]`}
+                style={{ background: "hsl(270 70% 60% / 0.08)" }}
               >
-                <div className="w-16 h-16 rounded-xl bg-muted/50 border border-border flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-all duration-300 group-hover:border-pr-primary">
-                  <item.icon className={`w-8 h-8 ${item.color}`} />
-                </div>
-                <div className={`font-display text-3xl mb-2 ${item.color}`}>{item.metric}</div>
-                <p className="font-body text-muted-foreground">{item.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+                <Icon className="size-4" />
+              </figure>
 
-        {/* Philosophy */}
-        <div className={`max-w-5xl mx-auto text-center mt-20 ${isVisible ? 'animate-fade-in' : ''}`} style={{ animationDelay: '700ms' }}>
-          <h3 className="font-heading text-2xl mb-6">Our Philosophy</h3>
-          <p className="font-body text-lg text-muted-foreground leading-relaxed">
-            Great security requires great people. Great people deserve great support. 
-            <span className="text-foreground font-semibold block mt-4">
+              <div className="relative z-10 flex flex-col gap-2">
+                <h3 className="text-base font-medium text-[--text-primary]">{benefit.title}</h3>
+                <p className="text-sm text-[--text-tertiary] leading-relaxed">{benefit.description}</p>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+
+      {/* "The Numbers" Strip */}
+      <div className="w-full grid grid-cols-2 md:grid-cols-4 border-b border-[hsl(0_0%_18%)]">
+        {additionalBenefits.map((item, index) => {
+          const Icon = item.icon;
+          return (
+            <div
+              key={index}
+              className={`p-6 border-r last:border-r-0 ${B} flex flex-col items-center text-center gap-2 hover:bg-[--surface-secondary] transition-colors`}
+            >
+              <figure
+                className={`flex size-9 items-center justify-center border ${B} text-[hsl(270_70%_75%)] mb-1`}
+                style={{ background: "hsl(270 70% 60% / 0.08)" }}
+              >
+                <Icon className="size-4" />
+              </figure>
+              <div className="text-2xl font-semibold text-[--text-primary] font-mono">{item.metric}</div>
+              <p className="text-xs text-[--text-tertiary]">{item.label}</p>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Philosophy Callout */}
+      <div className="w-full px-6 py-10 text-center bg-[--surface-secondary]/20">
+        <div className="max-w-3xl mx-auto space-y-2">
+          <span className="text-xs font-mono text-[hsl(var(--accent-500))] uppercase tracking-widest">
+            OUR PHILOSOPHY
+          </span>
+          <p className="text-sm md:text-base text-[--text-tertiary] leading-relaxed">
+            Great security requires great people. Great people deserve great support.{' '}
+            <strong className="text-[--text-primary] font-medium block mt-2">
               We invest in your success because your success is our success—and the world's security depends on both.
-            </span>
+            </strong>
           </p>
         </div>
       </div>
-    </section>
+
+      <div className={`w-full border-b ${B}`} />
+    </SectionShell>
   );
 }
+

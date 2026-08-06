@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { SiteNavbar } from '@/components/site-navbar';
 import { Footer } from '@/components/footer';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
+import { SectionShell } from '@/components/landing-primitives/section-shell';
 import { ArrowLeft, MapPin, Clock, DollarSign, ArrowUpRight, Briefcase, Code, Brain } from 'lucide-react';
 import jobsData from '@/data/jobs.json';
+
+const B = "border-[hsl(0_0%_18%)]";
 
 const iconMap: Record<string, any> = {
   Security: Code,
@@ -18,27 +18,28 @@ const iconMap: Record<string, any> = {
 export function JobDetail() {
   const { jobId } = useParams<{ jobId: string }>();
   const navigate = useNavigate();
-  const [isVisible, setIsVisible] = useState(false);
 
   const job = jobsData.jobs.find(j => j.id === jobId);
 
   useEffect(() => {
-    setIsVisible(true);
     window.scrollTo(0, 0);
   }, []);
 
   if (!job) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[--surface-primary] text-[--text-primary]">
         <SiteNavbar />
-        <div className="max-w-4xl mx-auto px-8 py-32 text-center">
-          <h1 className="font-display text-4xl mb-6">Job Not Found</h1>
-          <p className="text-muted-foreground mb-8">The position you're looking for doesn't exist.</p>
-          <Button onClick={() => navigate('/')}>
-            <ArrowLeft className="mr-2 w-4 h-4" />
+        <SectionShell container="full" className="py-32 text-center border-b border-[hsl(0_0%_18%)]">
+          <h1 className="text-3xl font-medium mb-4">Position Not Found</h1>
+          <p className="text-[--text-tertiary] mb-8 text-sm font-mono">THE POSITION YOU ARE LOOKING FOR DOES NOT EXIST OR HAS BEEN REMOVED.</p>
+          <button
+            onClick={() => navigate('/')}
+            className={`flex items-center gap-2 h-11 px-6 text-xs font-mono uppercase transition-colors border ${B} text-[--text-secondary] hover:bg-[--surface-secondary] cursor-pointer mx-auto`}
+          >
+            <ArrowLeft className="size-3.5" />
             Back to Careers
-          </Button>
-        </div>
+          </button>
+        </SectionShell>
         <Footer />
       </div>
     );
@@ -47,210 +48,192 @@ export function JobDetail() {
   const RoleIcon = iconMap[job.department] || Code;
 
   return (
-    <div className="min-h-screen bg-background w-full">
+    <div className="min-h-screen bg-[--surface-primary] text-[--text-primary]">
       <SiteNavbar />
       
-      {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-b from-background to-muted/20 overflow-hidden">
-        <div className="absolute inset-0 grid-pattern opacity-20"></div>
-        <div className="relative z-10 max-w-5xl mx-auto px-8">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate('/')}
-            className={`mb-8 ${isVisible ? 'animate-fade-in' : ''}`}
-          >
-            <ArrowLeft className="mr-2 w-4 h-4" />
-            Back to All Positions
-          </Button>
+      {/* Header Section */}
+      <section className={`relative pt-10 pb-12 border-b ${B} bg-[--surface-primary]`}>
+        <div className="container mx-auto px-6 max-w-5xl">
+          <div className="mb-6">
+            <button
+              onClick={() => navigate('/')}
+              className={`flex items-center gap-2 h-9 px-4 text-xs font-mono uppercase transition-colors border ${B} text-[--text-secondary] hover:bg-[--surface-secondary] cursor-pointer`}
+            >
+              <ArrowLeft className="size-3.5" />
+              ALL OPEN POSITIONS
+            </button>
+          </div>
 
-          <div className={`${isVisible ? 'animate-slide-in-up' : ''}`}>
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-16 h-16 rounded-xl bg-pr-primary/10 border border-border flex items-center justify-center">
-                <RoleIcon className="w-8 h-8 text-pr-primary" />
-              </div>
+          <div className="space-y-6">
+            <div className="flex items-start gap-4">
+              <figure
+                className={`flex size-12 items-center justify-center border ${B} text-[hsl(270_70%_75%)] shrink-0 mt-1`}
+                style={{ background: "hsl(270 70% 60% / 0.08)" }}
+              >
+                <RoleIcon className="size-6" />
+              </figure>
               <div>
-                <h1 className="font-display text-4xl md:text-5xl mb-2">{job.title}</h1>
-                <div className="flex flex-wrap items-center gap-4 font-body text-sm">
-                  <Badge variant="outline" className="border-border text-muted-foreground rounded-md px-3 py-1 font-medium">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[--text-primary]">
+                  {job.title}
+                </h1>
+                <div className="flex flex-wrap items-center gap-3 mt-3 text-xs font-mono text-[--text-tertiary]">
+                  <span className="border border-[hsl(0_0%_18%)] bg-[--surface-tertiary] px-2.5 py-0.5 uppercase tracking-wider text-[--text-secondary]">
                     {job.department}
-                  </Badge>
-                  <div className="flex items-center text-muted-foreground font-medium">
-                    <Clock className="w-4 h-4 mr-1" />
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Clock className="size-3.5" />
                     {job.type}
-                  </div>
-                  <div className="flex items-center text-muted-foreground font-medium">
-                    <MapPin className="w-4 h-4 mr-1" />
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <MapPin className="size-3.5" />
                     {job.location}
-                  </div>
+                  </span>
                   {job.salary && (
-                    <div className="flex items-center text-pr-primary font-semibold">
-                      <DollarSign className="w-4 h-4 mr-1" />
+                    <span className="flex items-center gap-1 text-[hsl(var(--accent-500))] font-semibold">
+                      <DollarSign className="size-3.5" />
                       {job.salary}
-                    </div>
+                    </span>
                   )}
                   {job.status === 'Closed' && (
-                    <Badge variant="destructive" className="bg-red-500/10 text-red-500 border-red-500/20 rounded-md px-3 py-1 font-semibold">
-                      Closed
-                    </Badge>
+                    <span className="text-[10px] font-mono text-red-400 border border-red-500/30 px-1.5 py-0.5">
+                      CLOSED
+                    </span>
                   )}
                 </div>
               </div>
             </div>
 
-            <p className="font-body text-xl text-muted-foreground leading-relaxed mb-8">
+            <p className="text-base md:text-lg text-[--text-secondary] leading-relaxed max-w-3xl">
               {job.description}
             </p>
 
+            {/* Application Instructions */}
             {job.status === 'Closed' ? (
-              <div className="mb-8 p-6 bg-red-500/5 rounded-xl border border-red-500/10 backdrop-blur-sm">
-                <h3 className="font-heading text-lg text-red-500 mb-2 flex items-center gap-2">
-                  Applications Closed
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  We are no longer accepting applications for this position. Thank you for your interest in PurpleRain Tech.
-                </p>
+              <div className={`p-5 bg-red-500/5 border border-red-500/20 text-xs font-mono text-[--text-tertiary]`}>
+                <strong className="text-red-400 uppercase block mb-1">APPLICATIONS CLOSED</strong>
+                We are no longer accepting applications for this position. Thank you for your interest in PurpleRain Tech.
               </div>
             ) : (
-              <div className="mb-8 p-6 bg-muted/20 rounded-xl border border-border backdrop-blur-sm">
-                <h3 className="font-heading text-lg mb-4">Application Instructions</h3>
-                <ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside">
-                  <li>Upload your resume, portfolio, and any relevant documents to <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" className="text-pr-primary hover:underline font-medium">Google Drive</a></li>
-                  <li>Make the folder/files publicly accessible (Anyone with the link can view)</li>
+              <div className={`p-6 bg-[--surface-secondary]/40 border ${B} space-y-3`}>
+                <h3 className="text-xs font-mono uppercase text-[--text-primary] tracking-wider">Application Instructions</h3>
+                <ol className="text-xs md:text-sm text-[--text-secondary] space-y-2 list-decimal list-inside leading-relaxed">
+                  <li>Upload resume & portfolio documents to <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" className="text-[hsl(var(--accent-500))] hover:underline font-mono">Google Drive</a></li>
+                  <li>Set file/folder permissions to public link access</li>
                   <li>Copy the shareable link</li>
-                  <li>When scheduling your interview, include:
-                    <ul className="ml-6 mt-2 space-y-1 list-disc">
-                      <li>Position applying for: <span className="font-semibold text-foreground">{job.title}</span></li>
-                      <li>Your Google Drive link with resume and documents</li>
-                    </ul>
-                  </li>
+                  <li>When scheduling your interview, include your share link in the notes</li>
                 </ol>
               </div>
             )}
 
-            {job.status === 'Closed' ? (
-              <Button 
-                size="lg"
-                disabled
-                className="bg-muted text-muted-foreground/60 border border-border font-semibold px-10 py-4 rounded-lg cursor-not-allowed"
-              >
-                Applications Closed
-              </Button>
-            ) : (
-              <Button 
-                size="lg"
-                className="bg-white text-black font-semibold px-10 py-4 rounded-lg transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] group"
-                onClick={() => window.open(job.interviewLink, '_blank')}
-              >
-                Apply for this Position
-                <ArrowUpRight className="ml-2 w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
-              </Button>
-            )}
+            {/* Action CTA */}
+            <div>
+              {job.status === 'Closed' ? (
+                <div className="flex h-12 w-full md:w-auto px-8 items-center justify-center text-xs font-mono uppercase text-[--text-tertiary] bg-[--surface-secondary] cursor-not-allowed border border-[hsl(0_0%_18%)]">
+                  APPLICATIONS CLOSED
+                </div>
+              ) : (
+                <button
+                  onClick={() => window.open(job.interviewLink, '_blank')}
+                  className="flex h-14 w-full md:w-auto px-8 items-center justify-center gap-2 text-base font-medium text-[--text-on-accent-primary] bg-[hsl(var(--accent-500))] hover:bg-[hsl(var(--accent-600))] cursor-pointer transition-colors"
+                >
+                  Apply for this Position
+                  <ArrowUpRight className="size-5" />
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Job Details */}
-      <section className="py-20">
-        <div className="max-w-5xl mx-auto px-8">
-          <div className="grid md:grid-cols-3 gap-12">
-            {/* Main Content */}
-            <div className="md:col-span-2 space-y-12">
-              <Card className={`premium-card ${isVisible ? 'animate-slide-in-up' : ''}`} style={{ animationDelay: '200ms' }}>
-                <CardContent className="p-8">
-                  <h2 className="font-heading text-2xl mb-6">About This Role</h2>
-                  <p className="font-body text-muted-foreground leading-relaxed">
-                    {job.fullDescription}
-                  </p>
-                </CardContent>
-              </Card>
+      {/* Main Details Body */}
+      <section className="py-16 bg-[--surface-primary]">
+        <div className="container mx-auto px-6 max-w-5xl">
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Main Content Column */}
+            <div className="md:col-span-2 space-y-8">
+              <div className={`bg-[--surface-primary] border ${B} p-6 md:p-8 space-y-3`}>
+                <h2 className="text-xs font-mono text-[--text-secondary] uppercase tracking-wider">About This Role</h2>
+                <p className="text-sm md:text-base text-[--text-tertiary] leading-relaxed">
+                  {job.fullDescription}
+                </p>
+              </div>
 
               {job.responsibilities && (
-                <Card className={`premium-card ${isVisible ? 'animate-slide-in-up' : ''}`} style={{ animationDelay: '300ms' }}>
-                  <CardContent className="p-8">
-                    <h2 className="font-heading text-2xl mb-6">Responsibilities</h2>
-                    <ul className="space-y-4">
-                      {job.responsibilities.map((resp, index) => (
-                        <li key={index} className="font-body text-muted-foreground flex items-start">
-                          <span className="text-pr-primary mr-3 mt-1 font-bold text-lg">•</span>
-                          <span>{resp}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
+                <div className={`bg-[--surface-primary] border ${B} p-6 md:p-8 space-y-4`}>
+                  <h2 className="text-xs font-mono text-[--text-secondary] uppercase tracking-wider">Responsibilities</h2>
+                  <ul className="space-y-3 text-sm md:text-base text-[--text-tertiary]">
+                    {job.responsibilities.map((resp, index) => (
+                      <li key={index} className="flex items-start gap-3">
+                        <span className="text-[hsl(var(--accent-500))] font-bold">•</span>
+                        <span>{resp}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
 
               {job.benefits && (
-                <Card className={`premium-card ${isVisible ? 'animate-slide-in-up' : ''}`} style={{ animationDelay: '400ms' }}>
-                  <CardContent className="p-8">
-                    <h2 className="font-heading text-2xl mb-6">What We Offer</h2>
-                    <ul className="space-y-4">
-                      {job.benefits.map((benefit, index) => (
-                        <li key={index} className="font-body text-muted-foreground flex items-start">
-                          <span className="text-pr-primary mr-3 mt-1 font-bold text-lg">•</span>
-                          <span>{benefit}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
+                <div className={`bg-[--surface-primary] border ${B} p-6 md:p-8 space-y-4`}>
+                  <h2 className="text-xs font-mono text-[--text-secondary] uppercase tracking-wider">What We Offer</h2>
+                  <ul className="space-y-3 text-sm md:text-base text-[--text-tertiary]">
+                    {job.benefits.map((benefit, index) => (
+                      <li key={index} className="flex items-start gap-3">
+                        <span className="text-[hsl(var(--accent-500))] font-bold">•</span>
+                        <span>{benefit}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
             </div>
 
-            {/* Sidebar */}
+            {/* Sidebar Column */}
             <div className="space-y-6">
-              <div className={`premium-card sticky top-24 ${isVisible ? 'animate-slide-in-up' : ''}`} style={{ animationDelay: '200ms' }}>
-                <CardContent className="p-6">
-                  <h3 className="font-heading text-lg mb-6">Apply Now</h3>
-                  
+              <div className={`bg-[--surface-primary] border ${B} p-6 space-y-6 sticky top-24`}>
+                <div>
+                  <h3 className="text-xs font-mono text-[--text-secondary] uppercase tracking-wider mb-3">Apply Now</h3>
                   {job.status === 'Closed' ? (
-                    <Button 
-                      disabled
-                      className="w-full bg-muted text-muted-foreground/60 border border-border font-semibold py-3 rounded-lg cursor-not-allowed mb-4"
-                    >
-                      Closed
-                    </Button>
+                    <div className="flex h-11 w-full items-center justify-center text-xs font-mono uppercase text-[--text-tertiary] bg-[--surface-secondary] border border-[hsl(0_0%_18%)] cursor-not-allowed">
+                      CLOSED
+                    </div>
                   ) : (
-                    <Button 
-                      className="w-full bg-white text-black font-semibold py-3 rounded-lg transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] group mb-4"
+                    <button
                       onClick={() => window.open(job.interviewLink, '_blank')}
+                      className="w-full flex items-center justify-center gap-2 h-11 text-sm font-medium transition-colors bg-[hsl(var(--accent-500))] text-[--text-on-accent-primary] hover:bg-[hsl(var(--accent-600))] cursor-pointer"
                     >
                       Schedule Interview
-                      <ArrowUpRight className="ml-2 w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
-                    </Button>
+                      <ArrowUpRight className="size-4" />
+                    </button>
                   )}
-                  <p className="text-xs text-muted-foreground text-center">
-                    {job.status === 'Closed' ? 'Applications are currently closed' : "We'll review your application within 48 hours"}
+                  <p className="text-xs font-mono text-[--text-tertiary] text-center mt-2">
+                    {job.status === 'Closed' ? 'CLOSED' : "RESPONSE WITHIN 48 HOURS"}
                   </p>
+                </div>
 
-                  {job.preferredRegions && (
-                    <div className="mt-6 pt-6 border-t border-border">
-                      <h4 className="font-heading text-sm mb-3">Preferred Regions</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {job.preferredRegions.map((region, index) => (
-                          <Badge key={index} variant="secondary" className="text-xs">
-                            {region}
-                          </Badge>
-                        ))}
-                      </div>
+                {job.preferredRegions && (
+                  <div className={`pt-4 border-t ${B} space-y-2`}>
+                    <h4 className="text-xs font-mono uppercase tracking-wider text-[--text-tertiary]">Preferred Regions</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {job.preferredRegions.map((region, index) => (
+                        <span key={index} className={`border ${B} bg-[--surface-tertiary] px-2.5 py-0.5 text-xs font-mono text-[--text-secondary]`}>
+                          {region}
+                        </span>
+                      ))}
                     </div>
-                  )}
-
-                  <div className="mt-6 pt-6 border-t border-border">
-                    <h4 className="font-heading text-sm mb-3">Share this Job</h4>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => {
-                        const url = window.location.href;
-                        navigator.clipboard.writeText(url);
-                      }}
-                      className="w-full"
-                    >
-                      Copy Link
-                    </Button>
                   </div>
-                </CardContent>
+                )}
+
+                <div className={`pt-4 border-t ${B} space-y-2`}>
+                  <h4 className="text-xs font-mono uppercase tracking-wider text-[--text-tertiary]">Share position</h4>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(window.location.href);
+                    }}
+                    className={`w-full flex items-center justify-center h-10 text-xs font-mono uppercase transition-colors border ${B} text-[--text-secondary] hover:bg-[--surface-secondary] cursor-pointer`}
+                  >
+                    Copy Share Link
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -261,3 +244,5 @@ export function JobDetail() {
     </div>
   );
 }
+
+
