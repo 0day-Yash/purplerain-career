@@ -1,6 +1,37 @@
 {
   "jobs": [
     {
+      "id": "cybersecurity-research-intern",
+      "title": "Cybersecurity Research Intern",
+      "department": "Research",
+      "type": "Internship",
+      "location": "Remote",
+      "status": "Open",
+      "description": "Join our research team to investigate live security issues, find and fix current vulnerabilities, and help strengthen real systems.",
+      "fullDescription": "As a Cybersecurity Research Intern, you will work on hands-on security research, analyze current vulnerabilities, and help implement practical fixes in real products and infrastructure. You will collaborate with engineers and researchers to turn findings into actionable remediation work, write clear reports, and contribute to security improvements that matter now.",
+      "requirements": [
+        "Currently pursuing or recently completed a degree in Cybersecurity, Computer Science, or a related field",
+        "Basic familiarity with vulnerability research, web application security, and common attack surfaces",
+        "Comfort with at least one scripting or programming language such as Python, Go, or Bash",
+        "Strong analytical thinking and a careful, methodical approach to debugging",
+        "Clear written communication and a willingness to document findings and fixes"
+      ],
+      "responsibilities": [
+        "Investigate current vulnerabilities in web apps, APIs, and infrastructure",
+        "Help identify root causes and propose practical remediation paths",
+        "Work with the team to implement and verify fixes",
+        "Document findings, reproduce issues, and share research notes",
+        "Support security testing and continuous improvement efforts"
+      ],
+      "benefits": [
+        "Hands-on experience with real security research and remediation work",
+        "Mentorship from experienced security engineers and researchers",
+        "Flexible remote collaboration and meaningful project ownership",
+        "A strong foundation for future full-time opportunities"
+      ],
+      "interviewLink": "https://cal.com/0day-yash/interview"
+    },
+    {
       "id": "vapt-intern",
       "title": "VAPT Intern",
       "department": "Security",

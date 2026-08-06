@@ -1,4 +1,4 @@
-# 💼 PurpleRain TechSafe – Careers Page
+# 💼 PurpleRain Tech – Careers Page
 
 > Modern, responsive careers website built with React, TypeScript, and Tailwind CSS
 
@@ -26,7 +26,7 @@
 
 ## 🌟 Overview
 
-PurpleRain TechSafe Careers Page is a modern, responsive website showcasing open positions and company culture. Built with React and TypeScript, it provides a seamless experience for potential candidates to learn about the company and apply for positions.
+PurpleRain Tech Careers Page is a modern, responsive website showcasing open positions and company culture. Built with React and TypeScript, it provides a seamless experience for potential candidates to learn about the company and apply for positions.
 
 **Live Site:** [https://purplerain-careers.netlify.app](https://purplerain-careers.netlify.app)
 
@@ -354,7 +354,7 @@ We welcome contributions! Please follow these guidelines:
 
 ## 📄 License
 
-Proprietary - All rights reserved by **PurpleRain TechSafe**
+Proprietary - All rights reserved by **PurpleRain Tech**
 
 ---
 
